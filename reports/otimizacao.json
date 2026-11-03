@@ -1,0 +1,253 @@
+{
+  "ano": 2025,
+  "chi_esperado_atual_mt": 25754295.43891259,
+  "curva": [
+    {
+      "k": 25,
+      "metodo": "modelo (guloso)",
+      "chi_evitado_ano": 839962.58,
+      "dec_min": 23.7,
+      "rs_ano_social": 4992223.85,
+      "rs_ano_compensacao": 1229906.79,
+      "investimento_rs": 4000000,
+      "vpl_social_rs": 45014389.65,
+      "vpl_compensacao_rs": 8075406.15
+    },
+    {
+      "k": 50,
+      "metodo": "modelo (guloso)",
+      "chi_evitado_ano": 1286304.65,
+      "dec_min": 36.29,
+      "rs_ano_social": 7645008.16,
+      "rs_ano_compensacao": 1883458.7,
+      "investimento_rs": 8000000,
+      "vpl_social_rs": 67059817.01,
+      "vpl_compensacao_rs": 10492075.14
+    },
+    {
+      "k": 100,
+      "metodo": "modelo (guloso)",
+      "chi_evitado_ano": 1875997.56,
+      "dec_min": 52.93,
+      "rs_ano_social": 11149782.19,
+      "rs_ano_compensacao": 2746910.64,
+      "investimento_rs": 16000000,
+      "vpl_social_rs": 93470205.11,
+      "vpl_compensacao_rs": 10969573.59
+    },
+    {
+      "k": 200,
+      "metodo": "modelo (guloso)",
+      "chi_evitado_ano": 2648415.67,
+      "dec_min": 74.72,
+      "rs_ano_social": 15740563.01,
+      "rs_ano_compensacao": 3877916.11,
+      "investimento_rs": 32000000,
+      "vpl_social_rs": 122543167.89,
+      "vpl_compensacao_rs": 6073952.04
+    },
+    {
+      "k": 25,
+      "metodo": "extensao",
+      "chi_evitado_ano": 115508.78,
+      "dec_min": 3.26,
+      "rs_ano_social": 686513.57,
+      "rs_ano_compensacao": 169132.58,
+      "investimento_rs": 4000000,
+      "vpl_social_rs": 2740291.41,
+      "vpl_compensacao_rs": -2339431.4
+    },
+    {
+      "k": 50,
+      "metodo": "extensao",
+      "chi_evitado_ano": 266489.81,
+      "dec_min": 7.52,
+      "rs_ano_social": 1583852.45,
+      "rs_ano_compensacao": 390205.04,
+      "investimento_rs": 8000000,
+      "vpl_social_rs": 7550496.84,
+      "vpl_compensacao_rs": -4168909.45
+    },
+    {
+      "k": 100,
+      "metodo": "extensao",
+      "chi_evitado_ano": 369211.37,
+      "dec_min": 10.42,
+      "rs_ano_social": 2194366.61,
+      "rs_ano_compensacao": 540614.06,
+      "investimento_rs": 16000000,
+      "vpl_social_rs": 5544614.81,
+      "vpl_compensacao_rs": -10692171.5
+    },
+    {
+      "k": 200,
+      "metodo": "extensao",
+      "chi_evitado_ano": 567656.15,
+      "dec_min": 16.02,
+      "rs_ano_social": 3373801.01,
+      "rs_ano_compensacao": 831184.84,
+      "investimento_rs": 32000000,
+      "vpl_social_rs": 1124475.62,
+      "vpl_compensacao_rs": -23839304.75
+    },
+    {
+      "k": 25,
+      "metodo": "clientes",
+      "chi_evitado_ano": 107591.67,
+      "dec_min": 3.04,
+      "rs_ano_social": 639459.09,
+      "rs_ano_compensacao": 157540.03,
+      "investimento_rs": 4000000,
+      "vpl_social_rs": 2278303.56,
+      "vpl_compensacao_rs": -2453248.81
+    },
+    {
+      "k": 50,
+      "metodo": "clientes",
+      "chi_evitado_ano": 195504.38,
+      "dec_min": 5.52,
+      "rs_ano_social": 1161958.5,
+      "rs_ano_compensacao": 286265.34,
+      "investimento_rs": 8000000,
+      "vpl_social_rs": 3408279.8,
+      "vpl_compensacao_rs": -5189404.72
+    },
+    {
+      "k": 100,
+      "metodo": "clientes",
+      "chi_evitado_ano": 361874.22,
+      "dec_min": 10.21,
+      "rs_ano_social": 2150759.06,
+      "rs_ano_compensacao": 529870.7,
+      "investimento_rs": 16000000,
+      "vpl_social_rs": 5116469.49,
+      "vpl_compensacao_rs": -10797651.31
+    },
+    {
+      "k": 200,
+      "metodo": "clientes",
+      "chi_evitado_ano": 541250.31,
+      "dec_min": 15.27,
+      "rs_ano_social": 3216860.81,
+      "rs_ano_compensacao": 792520.34,
+      "investimento_rs": 32000000,
+      "vpl_social_rs": -416386.42,
+      "vpl_compensacao_rs": -24218918.48
+    },
+    {
+      "k": 25,
+      "metodo": "aleatorio",
+      "chi_evitado_ano": 68179.92,
+      "dec_min": 1.92,
+      "rs_ano_social": 405219.75,
+      "rs_ano_compensacao": 99831.77,
+      "investimento_rs": 4000000,
+      "vpl_social_rs": -21492.72,
+      "vpl_compensacao_rs": -3019837.0
+    },
+    {
+      "k": 50,
+      "metodo": "aleatorio",
+      "chi_evitado_ano": 118400.59,
+      "dec_min": 3.34,
+      "rs_ano_social": 703700.68,
+      "rs_ano_compensacao": 173366.88,
+      "investimento_rs": 8000000,
+      "vpl_social_rs": -1090962.95,
+      "vpl_compensacao_rs": -6297858.46
+    },
+    {
+      "k": 100,
+      "metodo": "aleatorio",
+      "chi_evitado_ano": 218234.89,
+      "dec_min": 6.16,
+      "rs_ano_social": 1297054.71,
+      "rs_ano_compensacao": 319548.25,
+      "investimento_rs": 16000000,
+      "vpl_social_rs": -3265325.7,
+      "vpl_compensacao_rs": -12862628.19
+    },
+    {
+      "k": 200,
+      "metodo": "aleatorio",
+      "chi_evitado_ano": 401691.41,
+      "dec_min": 11.33,
+      "rs_ano_social": 2387408.1,
+      "rs_ano_compensacao": 588172.63,
+      "investimento_rs": 32000000,
+      "vpl_social_rs": -8560075.4,
+      "vpl_compensacao_rs": -26225234.43
+    }
+  ],
+  "razao_guloso_sobre_extensao": {
+    "25": 7.27,
+    "50": 4.83,
+    "100": 5.08,
+    "200": 4.67
+  },
+  "razao_guloso_sobre_aleatorio": {
+    "25": 12.32,
+    "50": 10.86,
+    "100": 8.6,
+    "200": 6.59
+  },
+  "k100": {
+    "frac_troca_fusivel": 0.28,
+    "alimentadores": 81,
+    "payback_social_mediano_anos": 1.8141196474841126,
+    "vpl_positivo_frac": 1.0
+  },
+  "k200_frac_chi_mt": 0.1028339398378644,
+  "sensibilidade": [
+    {
+      "cenario": "tau=0.3",
+      "guloso_chi": 1761638.726,
+      "extensao_chi": 392101.376,
+      "frac_troca_fusivel": 0.12,
+      "razao_guloso_extensao": 4.493
+    },
+    {
+      "cenario": "tau=0.5",
+      "guloso_chi": 1875997.563,
+      "extensao_chi": 369211.374,
+      "frac_troca_fusivel": 0.28,
+      "razao_guloso_extensao": 5.081
+    },
+    {
+      "cenario": "tau=0.7",
+      "guloso_chi": 2256711.876,
+      "extensao_chi": 327658.912,
+      "frac_troca_fusivel": 0.51,
+      "razao_guloso_extensao": 6.887
+    },
+    {
+      "cenario": "sem calibração por alimentador",
+      "guloso_chi": 2095066.159,
+      "extensao_chi": 288928.249,
+      "frac_troca_fusivel": 0.15,
+      "razao_guloso_extensao": 7.251
+    },
+    {
+      "cenario": "min_clientes=25",
+      "guloso_chi": 1895310.495,
+      "extensao_chi": 344720.102,
+      "frac_troca_fusivel": 0.26,
+      "razao_guloso_extensao": 5.498
+    },
+    {
+      "cenario": "min_clientes=100",
+      "guloso_chi": 1825818.544,
+      "extensao_chi": 385388.308,
+      "frac_troca_fusivel": 0.3,
+      "razao_guloso_extensao": 4.738
+    }
+  ],
+  "premissas": {
+    "custo_religador_rs": 160000,
+    "vida_anos": 20,
+    "taxa_desconto": 0.08,
+    "tau": 0.5,
+    "rs_por_chi_social": 5.943388419033372,
+    "uc_total_dec": 2126558.0
+  }
+}

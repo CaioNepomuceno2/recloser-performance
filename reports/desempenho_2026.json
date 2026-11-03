@@ -1,0 +1,100 @@
+{
+  "cobertura_vinculo_alimentador": 0.7901341289980759,
+  "interrupcoes_mt_2026": 35861,
+  "elementos": [
+    {
+      "elemento": "CHAVE FUSIVEL",
+      "interrupcoes": 14466,
+      "uc_por_evento_mediana": 21.0,
+      "uc_por_evento_media": 73.19093045762477,
+      "duracao_mediana_h": 4.966666666666667,
+      "chi": 4212425.75,
+      "frac_chi": 0.3968365036832014
+    },
+    {
+      "elemento": "RELIGADOR",
+      "interrupcoes": 7862,
+      "uc_por_evento_mediana": 50.0,
+      "uc_por_evento_media": 191.77931823963368,
+      "duracao_mediana_h": 2.533333333333333,
+      "chi": 3111505.783333333,
+      "frac_chi": 0.29312304822181395
+    },
+    {
+      "elemento": "DISJUNTOR",
+      "interrupcoes": 6237,
+      "uc_por_evento_mediana": 57.0,
+      "uc_por_evento_media": 366.50040083373415,
+      "duracao_mediana_h": 1.2833333333333334,
+      "chi": 2532551.1666666665,
+      "frac_chi": 0.23858195016940362
+    },
+    {
+      "elemento": "OUTRO",
+      "interrupcoes": 3634,
+      "uc_por_evento_mediana": 1.0,
+      "uc_por_evento_media": 29.06989543203082,
+      "duracao_mediana_h": 4.5,
+      "chi": 189717.1,
+      "frac_chi": 0.01787252170626777
+    },
+    {
+      "elemento": "MEDIDOR",
+      "interrupcoes": 2116,
+      "uc_por_evento_mediana": 1.0,
+      "uc_por_evento_media": 1.0,
+      "duracao_mediana_h": 5.633333333333334,
+      "chi": 19392.566666666666,
+      "frac_chi": 0.0018268994660483678
+    },
+    {
+      "elemento": "CHAVE SECCIONADORA",
+      "interrupcoes": 950,
+      "uc_por_evento_mediana": 68.0,
+      "uc_por_evento_media": 287.70526315789476,
+      "duracao_mediana_h": 2.5083333333333333,
+      "chi": 534911.8166666667,
+      "frac_chi": 0.05039199447131611
+    },
+    {
+      "elemento": "TRANSFORMADOR",
+      "interrupcoes": 387,
+      "uc_por_evento_mediana": 1.0,
+      "uc_por_evento_media": 4.421188630490956,
+      "duracao_mediana_h": 6.766666666666667,
+      "chi": 9866.35,
+      "frac_chi": 0.0009294710626329151
+    },
+    {
+      "elemento": "RAMAL",
+      "interrupcoes": 126,
+      "uc_por_evento_mediana": 1.0,
+      "uc_por_evento_media": 1.0,
+      "duracao_mediana_h": 4.383333333333333,
+      "chi": 892.9166666666666,
+      "frac_chi": 8.411826085728836e-05
+    },
+    {
+      "elemento": "NAO IDENTIFICADO",
+      "interrupcoes": 83,
+      "uc_por_evento_mediana": 1.0,
+      "uc_por_evento_media": 350.87951807228916,
+      "duracao_mediana_h": 1.0833333333333333,
+      "chi": 3752.3333333333335,
+      "frac_chi": 0.000353492958458421
+    }
+  ],
+  "seletividade": {
+    "alimentadores_elegiveis": 52,
+    "criterio": "saída por disjuntor, ao menos 1 religador de linha e 10 aberturas de disjuntor+religador",
+    "frac_disjuntor_esperada_mediana": 0.30366811038025504,
+    "frac_disjuntor_observada_mediana": 0.45067698259187616,
+    "alimentadores_com_suspeita": 20,
+    "chi_2026_nos_suspeitos": 629506.7166666666
+  },
+  "modelo_vs_2026": {
+    "alimentadores": 622,
+    "spearman_chi_modelo_vs_chi_2026": 0.6771627278782948,
+    "spearman_ci_topologico_vs_chi_2026": 0.4646947073933579
+  }
+}

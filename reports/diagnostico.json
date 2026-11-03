@@ -1,0 +1,56 @@
+{
+  "ano": 2025,
+  "inventario": {
+    "religadores_no_cadastro": 4060,
+    "religadores_normalmente_abertos": 355,
+    "religadores_telecomandados_cadastro": 872,
+    "religadores_de_linha_com_clientes": 2677,
+    "religadores_de_saida": 513,
+    "religadores_sem_clientes_outros": 409,
+    "seccionalizadores": 47,
+    "chaves_fusiveis_na_arvore": 335716,
+    "alimentadores": 697,
+    "alimentadores_com_saida_por_religador": 512
+  },
+  "validacao_modelo": {
+    "alimentadores": 636,
+    "spearman_ci_modelo_vs_observado": 0.8649154173962696,
+    "razao_ci_observado_sobre_modelo_mediana": 0.7888978341949147,
+    "ci_modelo_total": 18739171.488411877,
+    "ci_observado_total": 14211744.666666668
+  },
+  "zonas_religador_linha": {
+    "n": 2677,
+    "clientes_jusante_mediana": 139.0,
+    "clientes_zona_mediana": 88.0,
+    "clientes_zona_p90": 1683.2000000000003,
+    "km_zona_mediana": 32.58222300000002,
+    "km_zona_p90": 167.72236940000008,
+    "frac_com_menos_de_50_clientes_na_zona": 0.3866268210683601,
+    "em_serie_max": 10
+  },
+  "zonas_saida": {
+    "clientes_zona_mediana": 358.0,
+    "km_zona_mediana": 17.93231299999999
+  },
+  "alimentadores_sem_religador_de_linha": {
+    "n": 160,
+    "frac_uc": 0.07324689450301083,
+    "frac_km": 0.025227653273991492,
+    "longos_sem_religador_n": 2,
+    "km_p75": 331.337805,
+    "longos_sem_religador_uc": 4915.0
+  },
+  "zonas_criticas": {
+    "zonas": 3421,
+    "top10pct_n": 342,
+    "top10pct_frac_chi_esperado": 0.5979835743707222,
+    "top10pct_uc_zona": 520607.0,
+    "top10pct_frac_saida": 0.5292397660818714
+  },
+  "rede": {
+    "km_mt": 207644.000221,
+    "uc_alcancadas": 2052087.0,
+    "falhas_mt_por_100km_ano": 32.8893040944989
+  }
+}
