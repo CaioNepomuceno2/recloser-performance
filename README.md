@@ -96,8 +96,10 @@ O modelo calcula, para cada nó do tronco e para cada chave fusível, quanto CHI
 
 A taxa de falhas por km e a duração vêm do histórico de cada alimentador (2023-2025), e o modelo é calibrado para
 reproduzir o CHI observado de cada um. O algoritmo guloso instala um religador por vez no ponto de maior ganho e
-recalcula o alimentador. Para essa função, o guloso garante pelo menos 63% do ótimo. Há duas restrições: pelo menos
-50 clientes protegidos e no máximo 3 religadores em série abaixo do disjuntor.
+recalcula o alimentador. Se a redução de CHI é monótona e submodular no conjunto de religadores, a garantia clássica do
+guloso é de pelo menos 63% do ótimo, mas ela vale para a versão só com limite de quantidade. Aqui há duas restrições:
+pelo menos 50 clientes protegidos e no máximo 3 religadores em série abaixo do disjuntor. Com elas o guloso é uma
+heurística, e a garantia de 63% não está demonstrada. Nos testes com redes pequenas, ele coincidiu com a força bruta.
 
 | Religadores novos | Modelo | Dividir a zona com mais km | Dividir a zona com mais clientes | Local sorteado |
 |---|---|---|---|---|
