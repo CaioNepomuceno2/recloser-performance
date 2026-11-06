@@ -102,9 +102,10 @@ depois de instalar (`tests/test_recloser.py`).
 
   Em ambos os casos, com menos de 3 religadores em série acima.
 * **Guloso:** instala no nó de maior ganho, recalcula o alimentador alterado e repete. A redução de CHI é monótona e
-  submodular no conjunto de religadores, porque cada religador a mais reduz o ganho dos outros da mesma zona. Por
-  isso o guloso garante pelo menos `1 - 1/e ≈ 63%` do ótimo. Nos testes, com redes pequenas, ele coincide com a
-  força bruta para k = 1 e 2.
+  submodular no conjunto de religadores, porque cada religador a mais reduz o ganho dos outros da mesma zona. Com só um
+  limite de quantidade, isso daria ao guloso a garantia clássica de pelo menos `1 - 1/e ≈ 63%` do ótimo. A restrição de
+  no máximo 3 religadores em série foge desse caso, então aqui o guloso é uma heurística e a garantia de 63% não está
+  demonstrada. Nos testes, com redes pequenas, ele coincide com a força bruta para k = 1 e 2.
 * **Regras de comparação**, avaliadas pelo mesmo modelo:
   * dividir ao meio (em km) a zona com mais rede;
   * dividir ao meio (em clientes) a zona com mais clientes;
