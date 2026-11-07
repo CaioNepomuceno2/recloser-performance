@@ -1,0 +1,50 @@
+{
+  "2025": {
+    "nos_total": 1203393,
+    "nos_alcancados": 1202112,
+    "uc_total": 1404771.0,
+    "uc_alcancadas": 1404759.0,
+    "frac_uc_alcancadas": 0.9999914576824265,
+    "componentes_religados": 22,
+    "lacuna_mediana_m": 0.771766027184068,
+    "lacuna_p90_m": 11.83358211741677,
+    "chaves_normalmente_abertas": 4688,
+    "alimentadores": 362,
+    "alimentadores_sem_saida_no_grafo": 0,
+    "dispositivos_na_arvore": {
+      "segmento": 1046026,
+      "fusivel": 139365,
+      "chave": 13509,
+      "religador": 2072,
+      "saida": 362,
+      "seccionalizador": 360,
+      "regulador": 314,
+      "disjuntor": 82,
+      "religacao": 22
+    }
+  },
+  "2024": {
+    "nos_total": 1161133,
+    "nos_alcancados": 1159843,
+    "uc_total": 1458108.0,
+    "uc_alcancadas": 1458062.0,
+    "frac_uc_alcancadas": 0.9999684522682819,
+    "componentes_religados": 48,
+    "lacuna_mediana_m": 0.6934366064426323,
+    "lacuna_p90_m": 2.160576268554606,
+    "chaves_normalmente_abertas": 4243,
+    "alimentadores": 359,
+    "alimentadores_sem_saida_no_grafo": 0,
+    "dispositivos_na_arvore": {
+      "segmento": 1026876,
+      "fusivel": 116201,
+      "chave": 13933,
+      "religador": 1771,
+      "saida": 359,
+      "regulador": 293,
+      "seccionalizador": 267,
+      "disjuntor": 95,
+      "religacao": 48
+    }
+  }
+}

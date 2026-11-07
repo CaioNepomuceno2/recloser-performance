@@ -141,14 +141,14 @@ if existem("desempenho_elemento_2026.csv"):
     ordem = ELEMENTOS
     nomes = [ROTULO_ELEMENTO.get(o, o.title()) for o in ordem]
     el = el.reindex(ordem)
-    fig, ax = plt.subplots(1, 3, figsize=(10, 3.4) if len(ordem) == 4 else (13, 3.8))
+    fig, ax = plt.subplots(1, 3, figsize=(10, 3.4) if len(ordem) == 4 else (16, 3.9))
     for a, col, tit in [(ax[0], "interrupcoes", "Interrupções (jan-jul 2026)"),
                         (ax[1], "uc_por_evento_media", "Clientes por interrupção (média)"),
                         (ax[2], "duracao_mediana_h", "Duração mediana (h)")]:
         b = a.bar(nomes, el[col], color=COR_ELEMENTO[:len(ordem)])
         a.bar_label(b, labels=[br(v, 1 if "h" in tit else 0) for v in el[col]], fontsize=8.5, padding=2)
         a.set_title(tit, loc="left", fontsize=10, fontweight="bold")
-        a.tick_params(axis="x", labelsize=8.5)
+        a.tick_params(axis="x", labelsize=8.5 if len(ordem) == 4 else 8)
     fig.tight_layout()
     fig.savefig(F / "04_elementos_2026.png")
     plt.close(fig)

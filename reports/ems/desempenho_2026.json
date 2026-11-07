@@ -1,0 +1,82 @@
+{
+  "cobertura_vinculo_alimentador": 0.8417381714761107,
+  "interrupcoes_mt_2026": 103373,
+  "elementos": [
+    {
+      "elemento": "NAO IDENTIFICADO",
+      "interrupcoes": 29487,
+      "uc_por_evento_mediana": 1.0,
+      "uc_por_evento_media": 30.039542849391257,
+      "duracao_mediana_h": 4.0,
+      "chi": 2223639.327777778,
+      "frac_chi": 0.2442623190101717
+    },
+    {
+      "elemento": "MEDIDOR",
+      "interrupcoes": 28139,
+      "uc_por_evento_mediana": 1.0,
+      "uc_por_evento_media": 4.53573332385657,
+      "duracao_mediana_h": 4.183333333333334,
+      "chi": 328181.92916666664,
+      "frac_chi": 0.036050126508417754
+    },
+    {
+      "elemento": "RELIGADOR",
+      "interrupcoes": 19681,
+      "uc_por_evento_mediana": 19.0,
+      "uc_por_evento_media": 211.1439459377064,
+      "duracao_mediana_h": 0.21666666666666667,
+      "chi": 2909637.41,
+      "frac_chi": 0.31961783206794225
+    },
+    {
+      "elemento": "TRANSFORMADOR",
+      "interrupcoes": 15348,
+      "uc_por_evento_mediana": 2.0,
+      "uc_por_evento_media": 21.92181391712275,
+      "duracao_mediana_h": 5.316666666666666,
+      "chi": 1728912.1775,
+      "frac_chi": 0.18991753409178752
+    },
+    {
+      "elemento": "CHAVE FUSIVEL",
+      "interrupcoes": 9514,
+      "uc_por_evento_mediana": 6.0,
+      "uc_por_evento_media": 26.732394366197184,
+      "duracao_mediana_h": 6.466666666666667,
+      "chi": 1632245.6583333334,
+      "frac_chi": 0.1792989108972211
+    },
+    {
+      "elemento": "CHAVE SECCIONADORA",
+      "interrupcoes": 627,
+      "uc_por_evento_mediana": 15.0,
+      "uc_por_evento_media": 106.37480063795853,
+      "duracao_mediana_h": 2.45,
+      "chi": 197040.1625,
+      "frac_chi": 0.02164446654147365
+    },
+    {
+      "elemento": "DISJUNTOR",
+      "interrupcoes": 577,
+      "uc_por_evento_mediana": 28.0,
+      "uc_por_evento_media": 356.35008665511265,
+      "duracao_mediana_h": 0.05,
+      "chi": 83832.30833333333,
+      "frac_chi": 0.009208810882986031
+    }
+  ],
+  "seletividade": {
+    "alimentadores_elegiveis": 91,
+    "criterio": "saída por disjuntor, ao menos 1 religador de linha e 10 aberturas de disjuntor+religador",
+    "frac_disjuntor_esperada_mediana": 0.2204149791455947,
+    "frac_disjuntor_observada_mediana": 0.0,
+    "alimentadores_com_suspeita": 6,
+    "chi_2026_nos_suspeitos": 126115.6775
+  },
+  "modelo_vs_2026": {
+    "alimentadores": 344,
+    "spearman_chi_modelo_vs_chi_2026": 0.6700156532351493,
+    "spearman_ci_topologico_vs_chi_2026": 0.5028585578388513
+  }
+}

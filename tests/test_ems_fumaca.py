@@ -35,13 +35,13 @@ def pac(x_m, y_m, suf="MT"):
 
 def _origem(f):
     """Alimentadores 0 a 2 a oeste (X ~ 430 km, PAC de 19 caracteres); 3 a 5 a leste (X ~ 1.070 km, PAC de 20 caracteres)."""
-    return (430_000 if f < 3 else 1_070_000) + 3_000 * f, 7_600_000
+    return (430_000 if f % 6 < 3 else 1_070_000) + 3_000 * f, 7_600_000
 
 
-def _gravar_bdgd(pasta, rng, nomes, ano, novos=(), pac_ini_quebrado=()):
+def _gravar_bdgd(pasta, rng, nomes, ano, novos=(), pac_ini_quebrado=(), n_alim=6):
     """Camadas da BDGD (Parquet) de 6 alimentadores. ``novos``: (alimentador, nó) cujo trecho vira religador (só 2025)."""
     seg, sw, ctmt, trafos, ucbt, uc = [], [], [], [], [], []
-    for f in range(6):
+    for f in range(n_alim):
         cod, (x0, y0) = f"{900 + f}", _origem(f)
 
         def P(i, x0=x0, y0=y0):
@@ -167,9 +167,9 @@ def _gravar_bdgd(pasta, rng, nomes, ano, novos=(), pac_ini_quebrado=()):
     return uc
 
 
-def _gravar_historico(tmp, rng, uc, nomes, ms):
+def _gravar_historico(tmp, rng, uc, nomes, ms, n_alim=6):
     linhas = []
-    for f in range(6):
+    for f in range(n_alim):
         taxa_mes = (1.2 + 0.1 * f) * 2.4 / 12 / 2
         for ano in (2022, 2023, 2024, 2025):
             for mes in range(1, 13):
@@ -192,7 +192,7 @@ def _gravar_historico(tmp, rng, uc, nomes, ms):
     pd.DataFrame(linhas).to_parquet(tmp / "falhas.parquet", index=False)
     # interrupções de 2026: cada alimentador com aberturas de disjuntor e de religador, mais outros elementos
     rows = []
-    for f in range(6):
+    for f in range(n_alim):
         for k, el in enumerate(
             ["DISJUNTOR"] * 5 + ["RELIGADOR"] * 8 + ["CHAVE FUSIVEL"] * 3 + ["MEDIDOR"] * 4 + ["NAO IDENTIFICADO"] * 2
         ):
