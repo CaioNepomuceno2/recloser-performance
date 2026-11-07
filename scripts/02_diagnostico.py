@@ -8,9 +8,11 @@ import pandas as pd
 from recloser import analise, config, dados
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
-cfg = config.carregar()
-OUT = config.ROOT / "reports"
+cfg, _ = config.argumentos(__doc__)
+OUT = config.pasta_relatorios(cfg)
+OUT.mkdir(parents=True, exist_ok=True)
 ano = cfg["ano_atual"]
+config.exigir_porta(cfg, ano)
 e = analise.preparar(cfg, ano, cfg["confiabilidade"]["anos_taxa"])
 m, al = e.modelo, e.alimentadores
 

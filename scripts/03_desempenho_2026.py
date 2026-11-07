@@ -9,8 +9,10 @@ from scipy.stats import binomtest, spearmanr
 from recloser import analise, config, dados
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
-cfg = config.carregar()
-OUT = config.ROOT / "reports"
+cfg, _ = config.argumentos(__doc__)
+OUT = config.pasta_relatorios(cfg)
+OUT.mkdir(parents=True, exist_ok=True)
+config.exigir_porta(cfg, cfg["ano_atual"])
 e = analise.preparar(cfg, cfg["ano_atual"], cfg["confiabilidade"]["anos_taxa"])
 m, al = e.modelo, e.alimentadores.copy()
 al["ctmt"] = al.ctmt.astype("string")

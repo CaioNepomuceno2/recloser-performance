@@ -4,6 +4,7 @@ A distribuidora é escolhida pelo arquivo de configuração: ``--config`` nos sc
 ``RECLOSER_CONFIG`` ou, sem nenhum dos dois, ``configs/params.yaml`` (Energisa MT). Os padrões do código são os de
 MT; outra distribuidora entra por um arquivo próprio (``configs/params_ems.yaml``) que só muda caminhos e recortes.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -20,7 +21,7 @@ PADRAO = Path("configs") / "params.yaml"
 # o que vale quando a configuração não diz nada: os caminhos e o texto de Energisa MT
 PASTAS_PADRAO = {"reports": "reports", "processed": str(Path("data") / "processed")}
 NOME_PADRAO = "Energisa MT"
-CRS_PAC_PADRAO = 31981      # SIRGAS 2000 / UTM 21S
+CRS_PAC_PADRAO = 31981  # SIRGAS 2000 / UTM 21S
 
 
 def caminho_config(caminho: str | Path | None = None) -> Path:
@@ -45,8 +46,9 @@ def carregar(caminho: str | Path | None = None) -> dict:
 def argumentos(descricao: str | None = None) -> tuple[dict, argparse.Namespace]:
     """Lê ``--config`` da linha de comando dos scripts e devolve a configuração e os argumentos."""
     ap = argparse.ArgumentParser(description=descricao)
-    ap.add_argument("--config", default=None,
-                    help=f"arquivo de configuração (padrão: {VARIAVEL_AMBIENTE} ou {PADRAO.as_posix()})")
+    ap.add_argument(
+        "--config", default=None, help=f"arquivo de configuração (padrão: {VARIAVEL_AMBIENTE} ou {PADRAO.as_posix()})"
+    )
     args = ap.parse_args()
     return carregar(args.config), args
 
@@ -108,4 +110,5 @@ def exigir_porta(cfg: dict, ano: int) -> None:
         raise SystemExit(
             f"PORTA DE QUALIDADE: a topologia de {ano} liga {v['valor']} dos clientes à saída do alimentador "
             f"(mínimo pré-registrado {v['minimo']:.0%}). {v.get('motivo', '')} Resultados que dependem da rede "
-            f"não são gerados; ver docs/decisoes_ems.md.".strip())
+            f"não são gerados; ver docs/decisoes_ems.md.".strip()
+        )

@@ -6,6 +6,7 @@ em hexadecimal. Para não descompactar os ~2 GB inteiros, :func:`extrair_camadas
 descobre os arquivos das camadas pedidas e extrai só esses (mais as tabelas de sistema, que são pequenas).
 O zip nunca é modificado.
 """
+
 from __future__ import annotations
 
 import re
@@ -25,10 +26,10 @@ CAMADAS = {
     "UNTRMT": ["COD_ID", "PAC_1", "PAC_2", "CTMT", "POT_NOM"],
     "CTMT": ["COD_ID", "NOME", "SUB", "PAC_INI"],
 }
-TABELAS_UC = {"UCBT_tab": "UNI_TR_MT", "UCMT_tab": "PAC"}   # consumidores: tabela -> chave de ligação à rede
+TABELAS_UC = {"UCBT_tab": "UNI_TR_MT", "UCMT_tab": "PAC"}  # consumidores: tabela -> chave de ligação à rede
 COM_GEOM = {"UNSEMT", "UNTRMT"}
 LAYERS = [*CAMADAS, *TABELAS_UC]
-SISTEMA = range(1, 9)       # a00000001..a00000008: catálogo e tabelas de sistema do geodatabase
+SISTEMA = range(1, 9)  # a00000001..a00000008: catálogo e tabelas de sistema do geodatabase
 ARQUIVOS_FIXOS = {"gdb", "timestamps"}
 
 
@@ -55,8 +56,9 @@ def numeros_das_camadas(zip_path: Path) -> dict[str, int]:
         raiz = _raiz_gdb(z)
     pyogrio.set_gdal_config_options({"OPENFILEGDB_LIST_ALL_TABLES": "YES"})
     try:
-        meta, fids, _, dados = pyogrio.raw.read(f"/vsizip/{zip_path.as_posix()}/{raiz}", layer="GDB_SystemCatalog",
-                                                read_geometry=False, return_fids=True)
+        meta, fids, _, dados = pyogrio.raw.read(
+            f"/vsizip/{zip_path.as_posix()}/{raiz}", layer="GDB_SystemCatalog", read_geometry=False, return_fids=True
+        )
     finally:
         pyogrio.set_gdal_config_options({"OPENFILEGDB_LIST_ALL_TABLES": None})
     nomes = dados[list(meta["fields"]).index("Name")]
@@ -112,8 +114,9 @@ def gravar_camadas(gdb: Path, saida: Path, extremos_segmentos: bool = False) -> 
     for camada, cols in CAMADAS.items():
         campos = set(pyogrio.read_info(gdb, layer=camada)["fields"])
         geom = camada in COM_GEOM or (extremos_segmentos and camada == "SSDMT")
-        df = pyogrio.read_dataframe(gdb, layer=camada, columns=[c for c in cols if c in campos],
-                                    read_geometry=geom, use_arrow=True)
+        df = pyogrio.read_dataframe(
+            gdb, layer=camada, columns=[c for c in cols if c in campos], read_geometry=geom, use_arrow=True
+        )
         if camada in COM_GEOM:
             g = df.geometry.to_crs(4326).representative_point()
             df["lon"], df["lat"] = g.x, g.y

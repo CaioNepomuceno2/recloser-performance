@@ -4,6 +4,7 @@ Os PAC da BDGD de 19 ou 20 caracteres trazem a coordenada do ponto: ``X`` (8 ou 
 centímetros, mais 2 letras de sufixo. :func:`topologia.pac_xy` decodifica. As funções daqui comparam o resultado com a
 geometria da própria BDGD, em cada referência candidata, para dizer qual é a que a codificação realmente usa.
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -37,10 +38,16 @@ def resumo_distancias(d: np.ndarray) -> dict:
     d = d[np.isfinite(d)]
     if len(d) == 0:
         return {"n": 0}
-    return {"n": int(len(d)), "mediana_m": float(np.median(d)), "p90_m": float(np.percentile(d, 90)),
-            "p99_m": float(np.percentile(d, 99)), "max_m": float(d.max()),
-            "frac_ate_1m": float((d <= 1).mean()), "frac_ate_50m": float((d <= 50).mean()),
-            "frac_ate_100m": float((d <= 100).mean())}
+    return {
+        "n": int(len(d)),
+        "mediana_m": float(np.median(d)),
+        "p90_m": float(np.percentile(d, 90)),
+        "p99_m": float(np.percentile(d, 99)),
+        "max_m": float(d.max()),
+        "frac_ate_1m": float((d <= 1).mean()),
+        "frac_ate_50m": float((d <= 50).mean()),
+        "frac_ate_100m": float((d <= 100).mean()),
+    }
 
 
 def lonlat_do_pac(pac: pd.Series, epsg: int) -> tuple[np.ndarray, np.ndarray]:
