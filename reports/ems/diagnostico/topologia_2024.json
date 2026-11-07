@@ -1,0 +1,85 @@
+{
+  "ano": 2024,
+  "max_gap_m": 500,
+  "antes_do_reparo": {
+    "uc_total": 1458108.0,
+    "uc_alcancadas": 1395611.0,
+    "frac_uc_alcancadas": 0.957138291539447,
+    "componentes_religados": 0
+  },
+  "depois_do_reparo": {
+    "uc_total": 1458108.0,
+    "uc_alcancadas": 1458062.0,
+    "frac_uc_alcancadas": 0.9999684522682819,
+    "componentes_religados": 48,
+    "lacuna_mediana_m": 0.6934366064426323,
+    "lacuna_p90_m": 2.160576268554606,
+    "alimentadores_sem_saida_no_grafo": 0
+  },
+  "consistencia_de_circuito": {
+    "trafos_alcancados_com_clientes": 84734,
+    "frac_clientes_no_mesmo_circuito_do_cadastro": 1.0
+  },
+  "clientes_nao_alcancados": {
+    "total": 21.0,
+    "trafos": 17,
+    "PAC_sem_coordenada": 0.0,
+    "circuito_sem_nenhum_no_alcancado": 18.0,
+    "lacuna_acima_do_limite": 0.0,
+    "lacuna_dentro_do_limite_mas_sem_ligacao": 3.0,
+    "lacuna_mediana_m": 0.0,
+    "lacuna_p90_m": 0.0
+  },
+  "circuitos_com_mais_perda": [
+    {
+      "ctmt": "649057",
+      "nome": "",
+      "clientes_nao_alcancados": 4.0
+    },
+    {
+      "ctmt": "748492",
+      "nome": "NAN51",
+      "clientes_nao_alcancados": 3.0
+    },
+    {
+      "ctmt": "649055",
+      "nome": "",
+      "clientes_nao_alcancados": 2.0
+    },
+    {
+      "ctmt": "649060",
+      "nome": "",
+      "clientes_nao_alcancados": 2.0
+    },
+    {
+      "ctmt": "200754055",
+      "nome": "",
+      "clientes_nao_alcancados": 1.0
+    },
+    {
+      "ctmt": "2048806",
+      "nome": "",
+      "clientes_nao_alcancados": 1.0
+    },
+    {
+      "ctmt": "52468408",
+      "nome": "",
+      "clientes_nao_alcancados": 1.0
+    },
+    {
+      "ctmt": "649058",
+      "nome": "",
+      "clientes_nao_alcancados": 1.0
+    },
+    {
+      "ctmt": "649065",
+      "nome": "",
+      "clientes_nao_alcancados": 1.0
+    },
+    {
+      "ctmt": "649069",
+      "nome": "",
+      "clientes_nao_alcancados": 1.0
+    }
+  ]
+}

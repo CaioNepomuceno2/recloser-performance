@@ -17,6 +17,7 @@ dependencies = [
   "scikit-learn>=1.5",
   "pyproj>=3.6",
   "pyogrio>=0.9",
+  "geopandas>=1.0",       # pyogrio.read_dataframe (scripts/00_cache_bdgd.py) exige geopandas
   "requests>=2.32",
   "pyyaml>=6",
   "matplotlib>=3.9",
@@ -39,3 +40,6 @@ pythonpath = ["src"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP"]
 ignore = ["B905"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/tabelas_docs.py" = ["E501"]   # gerador das tabelas dos docs: linhas de texto longas

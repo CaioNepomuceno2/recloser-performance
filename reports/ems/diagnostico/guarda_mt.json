@@ -1,0 +1,42 @@
+{
+  "base": "7cedd3d69f85267267b9c93954a9fa4ce84c651a",
+  "novo": "ecb42a4e9390241ced91d3032836f529b6d353e3",
+  "dados": "BDGD sintética no formato de MT: 60 alimentadores, snapshots 2024 e 2025, sem origem_efeito",
+  "scripts_com_erro": {
+    "base": [],
+    "novo": []
+  },
+  "arquivos_base": 24,
+  "arquivos_novo": 24,
+  "iguais": 24,
+  "so_na_base": [],
+  "so_no_novo": [],
+  "diferentes": [],
+  "sha256": {
+    "data/processed/alimentadores_2024.parquet": "01224963191c07bc30cd73320bd53f9ec979c17667fe6eb25a1434bbf379c823",
+    "data/processed/alimentadores_2025.parquet": "01224963191c07bc30cd73320bd53f9ec979c17667fe6eb25a1434bbf379c823",
+    "data/processed/nos_2024.parquet": "219019f03ca7295ba9ffb0b77d661ecae8d72cfbfff07539a6ba93734f2434d5",
+    "data/processed/nos_2025.parquet": "c33a1a9f5ee110e5e9408e847995be63ea6214d5cc831ddb529d822e3f6c5a12",
+    "reports/alimentadores.csv": "d1bc1cbd49ec7731392229afaddcec60fc6de43ca5f2cb2c50776cc0fd230780",
+    "reports/backtest.json": "f690b2164f12d44134e0a92c103fd0d83a0b98e527e2e8a9e675baebf0e7f709",
+    "reports/backtest_instalacoes.csv": "1a41dd1af90096f4bb33d61130c8739ed1e65c25ef288622f4fb2aca37b23bf0",
+    "reports/curva_k.csv": "51cc65f51d7b1665667941362e8f7ed5fb8f2b3f49ea87d9e9901dfe80257844",
+    "reports/desempenho_2026.json": "deaf941ad6214fd1b063ac7794779a60de8d705988c027afb1dfd0627ee9cf83",
+    "reports/desempenho_elemento_2026.csv": "b5c8e23d3daf25de0d730dcbee3d8ca134bb853c5d5897efb63964534f22cb9f",
+    "reports/diagnostico.json": "30c4a78a44e93a29a3a9d23f72d99bcbc8cf9cbd63c970efa079e45521f4d5a6",
+    "reports/falhas_por_modo.csv": "163205b43f7f3e81ba6ea6b61d34dab971e4cb5c8e900f3afd40656b5a184d57",
+    "reports/figures/01_curva_k.png": "e6f42901fb29291dac5d94acdc8a297092ac740ccda0fbf5eb2e0f9d32bbf9dc",
+    "reports/figures/02_mapa.png": "6decac305305a500b884dd6117e0b223e401cb010ba46f709f5820d33385b925",
+    "reports/figures/03_zonas.png": "1ad6e06437e791222c0386a5cd2d934c353108acb20d5b62452b59434eacd4b1",
+    "reports/figures/04_elementos_2026.png": "ad060bc2906345370fd897d1ce3fe23c809825158ecfb0cc5d8f7e663f7528ad",
+    "reports/figures/05_backtest.png": "efa1a08c52976ba033e088bb25753e3b8c9accb0070c7f635593f7ed8916b071",
+    "reports/figures/06_seletividade.png": "084f97400849854ca9208d4b44db6d32f2c954320f4993245ec93a83ba129252",
+    "reports/lista_priorizada.csv": "7de4e18e387780bdd0aee318493dd5ab0e535fdb79b66681c200274a23e3970e",
+    "reports/otimizacao.json": "ae20c65a11065b964de6acb5aae8e2dee4232dc671c52cc406b7f2d911a85e9f",
+    "reports/qualidade_topologia.json": "d203f39e042dbbd970093236b180dffa670465881b275ec5b140919f9cbfd88c",
+    "reports/seletividade_2026.csv": "de5a0c56daba45b807c2f2a6a4339191d62f6d8f19ceee453b80cce3f982ba21",
+    "reports/sensibilidade.csv": "08192a2a7de0616ad4d8702a187a2fd89a7a5baeb348f97341a68bceb757fc35",
+    "reports/zonas.csv": "b4abffcfc012eb3da366b320952e4284fba5f9ca00a93e43f9edcf6af870f140"
+  },
+  "identico": true
+}

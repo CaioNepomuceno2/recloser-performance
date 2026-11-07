@@ -11,12 +11,14 @@ from recloser import analise, config, dados
 from recloser import otimizacao as O
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
-cfg = config.carregar()
-OUT = config.ROOT / "reports"
+cfg, _ = config.argumentos(__doc__)
+OUT = config.pasta_relatorios(cfg)
+OUT.mkdir(parents=True, exist_ok=True)
 oc, vc = cfg["otimizacao"], cfg["valor"]
 ks, kmax = oc["ks"], max(oc["ks"])
-val = dados.valoracao(cfg["valor_json"])
+val = dados.valoracao(cfg["valor_json"], exigir_origem=bool(cfg.get("exigir_origem_efeito")))
 ano = cfg["ano_atual"]
+config.exigir_porta(cfg, ano)
 e = analise.preparar(cfg, ano, cfg["confiabilidade"]["anos_taxa"])
 base = copy.deepcopy(e.modelo)
 chi_atual = O.chi_total(base, e.chi_por_ci)
@@ -51,33 +53,34 @@ for c, v in valorar(curva.chi_evitado_ano).items():
 curva["investimento_rs"] = curva.k * vc["custo_religador_rs"]
 curva["vpl_social_rs"] = curva.rs_ano_social * anuidade - curva.investimento_rs
 curva["vpl_compensacao_rs"] = curva.rs_ano_compensacao * anuidade - curva.investimento_rs
-curva.to_csv(OUT / "curva_k.csv", index=False)
+dados.rotular_tabela(curva, val).to_csv(OUT / "curva_k.csv", index=False)
 
-# ---------------------------------------------------------------- sensibilidade (k = 100)
+# ---------------------------------------------------------------- sensibilidade (k = 100 por padrão)
+KS = oc.get("k_sensibilidade", 100)
 sens = []
 for tau in [0.3, 0.5, 0.7]:
     es = analise.preparar(cfg, ano, cfg["confiabilidade"]["anos_taxa"], tau=tau)
-    g = O.guloso(copy.deepcopy(es.modelo), es.chi_por_ci, 100, oc["min_clientes"], oc["max_religadores_em_serie"])
-    r = O.regra_divisao(copy.deepcopy(es.modelo), es.chi_por_ci, [100], "extensao", oc["min_clientes"],
+    g = O.guloso(copy.deepcopy(es.modelo), es.chi_por_ci, KS, oc["min_clientes"], oc["max_religadores_em_serie"])
+    r = O.regra_divisao(copy.deepcopy(es.modelo), es.chi_por_ci, [KS], "extensao", oc["min_clientes"],
                         oc["max_religadores_em_serie"])
-    sens.append({"cenario": f"tau={tau}", "guloso_chi": float(g.chi_evitado_ano.sum()), "extensao_chi": r[100],
+    sens.append({"cenario": f"tau={tau}", "guloso_chi": float(g.chi_evitado_ano.sum()), "extensao_chi": r[KS],
                  "frac_troca_fusivel": float((g.tipo == "troca_de_fusivel").mean())})
 uniforme = pd.Series(float(e.chi_por_ci.median()), index=e.chi_por_ci.index)
-g = O.guloso(copy.deepcopy(base), uniforme, 100, oc["min_clientes"], oc["max_religadores_em_serie"])
-r = O.regra_divisao(copy.deepcopy(base), uniforme, [100], "extensao", oc["min_clientes"], oc["max_religadores_em_serie"])
+g = O.guloso(copy.deepcopy(base), uniforme, KS, oc["min_clientes"], oc["max_religadores_em_serie"])
+r = O.regra_divisao(copy.deepcopy(base), uniforme, [KS], "extensao", oc["min_clientes"], oc["max_religadores_em_serie"])
 sens.append({"cenario": "sem calibração por alimentador", "guloso_chi": float(g.chi_evitado_ano.sum()),
-             "extensao_chi": r[100], "frac_troca_fusivel": float((g.tipo == "troca_de_fusivel").mean())})
+             "extensao_chi": r[KS], "frac_troca_fusivel": float((g.tipo == "troca_de_fusivel").mean())})
 for mc in [25, 100]:
-    g = O.guloso(copy.deepcopy(base), e.chi_por_ci, 100, mc, oc["max_religadores_em_serie"])
-    r = O.regra_divisao(copy.deepcopy(base), e.chi_por_ci, [100], "extensao", mc, oc["max_religadores_em_serie"])
-    sens.append({"cenario": f"min_clientes={mc}", "guloso_chi": float(g.chi_evitado_ano.sum()), "extensao_chi": r[100],
+    g = O.guloso(copy.deepcopy(base), e.chi_por_ci, KS, mc, oc["max_religadores_em_serie"])
+    r = O.regra_divisao(copy.deepcopy(base), e.chi_por_ci, [KS], "extensao", mc, oc["max_religadores_em_serie"])
+    sens.append({"cenario": f"min_clientes={mc}", "guloso_chi": float(g.chi_evitado_ano.sum()), "extensao_chi": r[KS],
                  "frac_troca_fusivel": float((g.tipo == "troca_de_fusivel").mean())})
 sens = pd.DataFrame(sens)
 sens["razao_guloso_extensao"] = sens.guloso_chi / sens.extensao_chi
-sens.to_csv(OUT / "sensibilidade.csv", index=False)
+dados.rotular_tabela(sens, val).to_csv(OUT / "sensibilidade.csv", index=False)
 
 # ---------------------------------------------------------------- lista priorizada
-tr = Transformer.from_crs(31981, 4326, always_xy=True)
+tr = Transformer.from_crs(config.crs_pac(cfg), 4326, always_xy=True)
 esc["lon"], esc["lat"] = tr.transform(esc.x.to_numpy(), esc.y.to_numpy())
 al = e.alimentadores.set_index("ctmt")
 esc["alimentador"] = esc.ctmt.map(al.NOME)
@@ -89,10 +92,11 @@ esc["vpl_social_rs"] = esc.rs_ano_social * anuidade - vc["custo_religador_rs"]
 lista = esc[["passo", "alimentador", "ctmt", "subestacao_bdgd", "tipo", "uc_jusante", "km_jusante_zona",
              "chi_evitado_ano", "dec_min", "rs_ano_social", "rs_ano_compensacao", "payback_social_anos",
              "vpl_social_rs", "lon", "lat", "pac"]]
-lista.round(4).to_csv(OUT / "lista_priorizada.csv", index=False)
+dados.rotular_tabela(lista.round(4), val).to_csv(OUT / "lista_priorizada.csv", index=False)
 
 pivot = curva.pivot(index="k", columns="metodo", values="chi_evitado_ano")
 resumo = {
+    **dados.rotulo(val),
     "ano": ano,
     "chi_esperado_atual_mt": chi_atual,
     "curva": curva.round(2).to_dict("records"),

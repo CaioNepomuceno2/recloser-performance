@@ -1,0 +1,53 @@
+{
+  "piso_da_calibracao": 0.2,
+  "alimentadores_com_historico": {
+    "n": 350,
+    "no_piso": 124
+  },
+  "parte_do_chi_observado_nos_alimentadores_no_piso": 0.25839587617248144,
+  "posicionamento": {
+    "100": {
+      "pontos_em_alimentadores_no_piso": 40,
+      "frac_dos_pontos": 0.4,
+      "frac_do_chi_evitado": 0.3663854238581587,
+      "dec_min_total": 70.4378,
+      "dec_min_nos_alimentadores_no_piso": 25.807299999999998
+    },
+    "200": {
+      "pontos_em_alimentadores_no_piso": 89,
+      "frac_dos_pontos": 0.445,
+      "frac_do_chi_evitado": 0.4018585404438141,
+      "dec_min_total": 103.2391,
+      "dec_min_nos_alimentadores_no_piso": 41.4872
+    },
+    "100_sem_alimentadores_no_piso": {
+      "pontos": 100,
+      "chi_evitado_ano": 1424266.0665624423,
+      "dec_min": 58.60505963565664
+    }
+  },
+  "backtest": {
+    "alimentadores_no_piso_na_rede_de_2024": 152,
+    "parte_do_chi_observado_nos_alimentadores_no_piso": 0.39237290990836804,
+    "instalacoes_reais": {
+      "n": 268,
+      "em_alimentadores_no_piso": 70,
+      "frac": 0.26119402985074625,
+      "frac_do_chi_evitado": 0.5860734874024703
+    },
+    "locais_do_modelo_mesmo_numero": {
+      "n": 268,
+      "em_alimentadores_no_piso": 151,
+      "frac": 0.5634328358208955,
+      "frac_do_chi_evitado": 0.5904436913629556,
+      "chi_evitado_ano": 2879239.9324660273
+    },
+    "sem_alimentadores_no_piso": {
+      "instalacoes_reais_localizadas": 198,
+      "chi_evitado_ano_instalacoes_reais_modelo": 253837.54603988864,
+      "chi_evitado_ano_mesmo_numero_no_modelo": 1518188.2907825364,
+      "razao_modelo_sobre_real": 5.980944562645451
+    }
+  },
+  "origem_efeito": "transportado de MT"
+}

@@ -1,0 +1,90 @@
+{
+  "origem_efeito": "transportado de MT",
+  "nota_comparacao_did": "chi_evitado_ano_did_por_religador e fator_did_sobre_modelo usam o efeito do valor.json, cuja origem está em origem_efeito. Se não for 'medido', a comparação não valida o modelo.",
+  "anos": [
+    2024,
+    2025
+  ],
+  "anos_taxa_de_falhas": [
+    2022,
+    2023,
+    2024
+  ],
+  "religadores_novos": 291,
+  "religadores_novos_com_data_de_conexao_recente": 231,
+  "localizados_na_rede_anterior": 268,
+  "frac_dentro_de_ramal_com_fusivel": 0.34701492537313433,
+  "frac_com_ganho_no_modelo": 0.3619402985074627,
+  "motivos_sem_ganho": {
+    "menos de 50 clientes a jusante": 114,
+    "já há religadores demais em série": 42,
+    "outro (sem clientes a proteger)": 15
+  },
+  "percentil_mediano_entre_candidatos": 0.6322071066777931,
+  "frac_no_top10pct_dos_candidatos": 0.0708955223880597,
+  "auc_alimentador_recebeu_religador": {
+    "modelo_maior_ganho": 0.6266132621272807,
+    "modelo_soma_ganhos": 0.6294318350393118,
+    "extensao_km": 0.7306037679869456,
+    "clientes": 0.5714471146714137,
+    "chi_historico": 0.7238169411066606
+  },
+  "alimentadores_que_receberam": 107,
+  "chi_evitado_ano_modelo_por_religador": 1789.6808878008221,
+  "chi_evitado_ano_did_por_religador": 3892.998687124507,
+  "chi_evitado_ano_did_por_religador_ic95": [
+    1760.2527843812097,
+    5816.307330972334
+  ],
+  "chi_evitado_ano_instalacoes_reais_modelo": 479634.4779306203,
+  "chi_evitado_ano_mesmo_numero_no_modelo": 2879239.9324660273,
+  "razao_modelo_sobre_real": 6.00298782708134,
+  "religadores_comparados": 268,
+  "fator_did_sobre_modelo": 2.175247393912924,
+  "sensibilidade_dat_con_no_periodo": {
+    "anos_dat_con": [
+      2024,
+      2025
+    ],
+    "anos": [
+      2024,
+      2025
+    ],
+    "anos_taxa_de_falhas": [
+      2022,
+      2023,
+      2024
+    ],
+    "religadores_novos": 231,
+    "religadores_novos_com_data_de_conexao_recente": 231,
+    "localizados_na_rede_anterior": 213,
+    "frac_dentro_de_ramal_com_fusivel": 0.39436619718309857,
+    "frac_com_ganho_no_modelo": 0.3286384976525822,
+    "motivos_sem_ganho": {
+      "menos de 50 clientes a jusante": 96,
+      "já há religadores demais em série": 37,
+      "outro (sem clientes a proteger)": 10
+    },
+    "percentil_mediano_entre_candidatos": 0.6150905315453434,
+    "frac_no_top10pct_dos_candidatos": 0.056338028169014086,
+    "auc_alimentador_recebeu_religador": {
+      "modelo_maior_ganho": 0.5912408759124087,
+      "modelo_soma_ganhos": 0.5956204379562043,
+      "extensao_km": 0.7311721768999571,
+      "clientes": 0.5521468441391155,
+      "chi_historico": 0.7015886646629454
+    },
+    "alimentadores_que_receberam": 85,
+    "chi_evitado_ano_modelo_por_religador": 1382.536724438742,
+    "chi_evitado_ano_did_por_religador": 3892.998687124507,
+    "chi_evitado_ano_did_por_religador_ic95": [
+      1760.2527843812097,
+      5816.307330972334
+    ],
+    "chi_evitado_ano_instalacoes_reais_modelo": 294480.3223054521,
+    "chi_evitado_ano_mesmo_numero_no_modelo": 2559820.802303531,
+    "razao_modelo_sobre_real": 8.692671830372205,
+    "religadores_comparados": 213,
+    "fator_did_sobre_modelo": 2.8158374517717912
+  }
+}

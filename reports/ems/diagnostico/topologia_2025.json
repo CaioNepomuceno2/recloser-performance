@@ -1,0 +1,34 @@
+{
+  "ano": 2025,
+  "max_gap_m": 500,
+  "antes_do_reparo": {
+    "uc_total": 1404771.0,
+    "uc_alcancadas": 1338932.0,
+    "frac_uc_alcancadas": 0.953131862773363,
+    "componentes_religados": 0
+  },
+  "depois_do_reparo": {
+    "uc_total": 1404771.0,
+    "uc_alcancadas": 1404759.0,
+    "frac_uc_alcancadas": 0.9999914576824265,
+    "componentes_religados": 22,
+    "lacuna_mediana_m": 0.771766027184068,
+    "lacuna_p90_m": 11.83358211741677,
+    "alimentadores_sem_saida_no_grafo": 0
+  },
+  "consistencia_de_circuito": {
+    "trafos_alcancados_com_clientes": 84530,
+    "frac_clientes_no_mesmo_circuito_do_cadastro": 1.0
+  },
+  "clientes_nao_alcancados": {
+    "total": 0.0,
+    "trafos": 0,
+    "PAC_sem_coordenada": 0.0,
+    "circuito_sem_nenhum_no_alcancado": 0.0,
+    "lacuna_acima_do_limite": 0.0,
+    "lacuna_dentro_do_limite_mas_sem_ligacao": 0.0,
+    "lacuna_mediana_m": null,
+    "lacuna_p90_m": null
+  },
+  "circuitos_com_mais_perda": []
+}

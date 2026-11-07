@@ -1,0 +1,82 @@
+{
+  "ano": 2025,
+  "camadas": {
+    "SSDMT": 1046026,
+    "SSDMT_km": 91452.972613,
+    "SSDMT_comp_nulo_ou_zero": 0,
+    "UNSEMT": 161148,
+    "UNREMT": 316,
+    "UNTRMT": 106660,
+    "CTMT": 362,
+    "UCBT_consumidores": 1400910,
+    "UCMT_consumidores": 6801
+  },
+  "religadores": {
+    "n": 2646,
+    "frac_telecomandados": 0.6836734693877551,
+    "frac_normalmente_abertos": 0.15759637188208617
+  },
+  "classes_unsemt": {
+    "fusivel": 139480,
+    "chave": 18427,
+    "religador": 2646,
+    "seccionalizador": 456,
+    "disjuntor": 139
+  },
+  "frac_unsemt_fora_do_mapeamento": 0.11434830094075012,
+  "P_N_OPE": {
+    "F": 156460,
+    "A": 4688
+  },
+  "circuitos": {
+    "n": 362,
+    "nome_comprimentos": {
+      "5": 362
+    },
+    "nome_so_digitos": 0.0,
+    "nome_alfanumerico": 1.0,
+    "nomes_repetidos": 0,
+    "exemplos": [
+      "RBR01",
+      "DOI06",
+      "CGP01",
+      "CGP02",
+      "CGP03",
+      "CGP04"
+    ],
+    "ssdmt_ctmt_existe_em_ctmt": 1.0,
+    "unsemt_ctmt_existe_em_ctmt": 0.9897609650755826,
+    "untrmt_ctmt_existe_em_ctmt": 0.9994374648415526,
+    "canonico_comprimentos": {
+      "6": 362
+    },
+    "canonico_repetidos": 0
+  },
+  "clientes": {
+    "bt_consumidores": 1400910,
+    "bt_com_transformador_no_cadastro": 0.9979013641133263,
+    "mt_consumidores": 6801,
+    "mt_com_pac_na_rede": 0.9982355535950596,
+    "cadastro_consumidores_ligados_a_trafo_ou_pac": 0.9979029786653653,
+    "trafos_sem_consumidor": 0.20748171760735046,
+    "trafos_com_pac_na_rede_de_segmentos": 0.06300393774610913,
+    "pac_ini_na_rede": 1.0,
+    "pac_nos_total": 1203928,
+    "ucbt_ctmt_igual_ao_do_trafo": 0.9991001237508673
+  },
+  "dat_con_religadores": {
+    "formato_dd_mm_aaaa": 1.0,
+    "nulos": 0,
+    "por_ano_ultimos": {
+      "2020": 62,
+      "2021": 111,
+      "2022": 286,
+      "2023": 130,
+      "2024": 90,
+      "2025": 394
+    },
+    "padrao_1920": 0,
+    "padrao_1980": 0,
+    "antes_de_1990": 5
+  }
+}
