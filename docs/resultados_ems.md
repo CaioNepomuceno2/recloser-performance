@@ -160,7 +160,7 @@ de 2024 e sem religador de 2024 a menos de 100 m (a regra de MT); localizado a a
 * **O modelo não é o que melhor explica onde se instalou** (AUC menor que o da extensão e do CHI histórico): o backtest mede se a priorização por ganho de DEC
   reproduz a prática, e não reproduz. Isso não diz que a prática está errada (religador em linha longa também reduz patrulha, efeito que o modelo não captura).
 * **Mesmo número de religadores nos locais do modelo evita muito mais CHI que as instalações reais**, pelo mesmo modelo. É diferença entre locais com a mesma régua, não ganho medido em campo.
-  Mais da metade dos locais do modelo cai em alimentadores no piso da calibração (tabela da seção 5), mas a razão não depende deles: sem esses alimentadores, dos dois lados, ela continua a mesma.
+  Mais da metade dos locais do modelo cai em alimentadores no piso da calibração (tabela da seção 5), mas a razão da regra principal não depende deles: sem esses alimentadores, dos dois lados, ela continua a mesma (a sensibilidade por `DAT_CON` não foi refeita assim).
 * **A comparação com o efeito do `valor.json` não valida o modelo.** Em MT, o `automation-impact` mediu o efeito em campo; em MS ele é o de MT (`origem_efeito`),
   aplicado à exposição de MS. Os campos `chi_evitado_ano_did_por_religador` e `fator_did_sobre_modelo` de `backtest.json` ficam, por isso, sem leitura.
 
