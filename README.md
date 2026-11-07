@@ -237,8 +237,8 @@ precisa ligar pelo menos 95% dos clientes à saída do alimentador para publicar
 | Zonas de religador com menos de 50 clientes | **30%**, e a zona mediana tem 126 clientes |
 | Concentração do risco | **10% das zonas** de proteção respondem por **50%** do CHI esperado. 59% delas são zona da saída |
 | Onde a distribuidora instalou religadores em 2025 | Explicado sobretudo pela **extensão** do alimentador (AUC 0,73) e pelo CHI histórico (0,72), não pelos clientes (0,57). **43%** das instalações protegem menos de 50 clientes |
-| Mesmo número de religadores (268), nos locais do modelo | **6×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo (efeito do religador: transportado de MT) |
-| 100 religadores novos, locais do modelo (rede 2025) | **70 min de DEC/ano** evitados no modelo, contra 9 min da regra "dividir a zona com mais km" e 8 min de locais sorteados |
+| Mesmo número de religadores (268), nos locais do modelo | **6×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo |
+| 100 religadores novos, locais do modelo (rede 2025) | **70 min de DEC/ano** evitados no modelo (**59 min** sem os alimentadores no piso da calibração), contra 9 min da regra "dividir a zona com mais km" e 8 min de locais sorteados |
 | Disjuntor abrindo mais que o esperado (2026) | 6 de 91 alimentadores elegíveis. **Só descritivo**: o campo de elemento quase não registra disjuntor em MS |
 
 ![curva MS](reports/ems/figures/01_curva_k.png)
@@ -247,7 +247,8 @@ precisa ligar pelo menos 95% dos clientes à saída do alimentador para publicar
   (`decisoes_ems.md`, seção 2).
 * **O guloso é uma heurística** com restrição de religadores em série. A garantia de 63% do guloso clássico não está demonstrada com essa restrição, e não é prometida.
 * **Comparação com MT, só descritiva** (`resultados_ems.md`, seção 7): MS tem 3,6 vezes mais falhas por km nos registros da ANEEL e o modelo de zonas se ajusta pior (o CI do modelo é cerca de 3,6 vezes o observado, e 35% dos alimentadores ficam no piso da calibração).
-* **Limites.** A calibração em MS é mais frágil que em MT (`resultados_ems.md`, seção 2). O backtest infere "instalação nova" de dois cadastros que misturam instalação, remanejamento e recadastramento: a regra de MT é a principal e uma sensibilidade por `DAT_CON` sai ao lado. 2026 não tem
+* **Limites.** A calibração em MS é mais frágil que em MT (`resultados_ems.md`, seção 2): os alimentadores no piso da calibração têm 26% do CHI observado e levam 37% do DEC dos 100 primeiros locais (40% dos pontos),
+  um viés do guloso para eles. Sem esses alimentadores, os 100 primeiros evitam 59 min por ano em vez de 70 (`resultados_ems.md`, seção 5; a razão do backtest não muda). O backtest infere "instalação nova" de dois cadastros que misturam instalação, remanejamento e recadastramento: a regra de MT é a principal e uma sensibilidade por `DAT_CON` sai ao lado. 2026 não tem
   nenhum registro em março, e o campo de elemento quase não registra disjuntor, então o sinal de seletividade é só descritivo.
 
 ```bash

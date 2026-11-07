@@ -538,6 +538,47 @@ def tabela_backtest(R, cfg):
     return md([list(x) for x in lin], ["", "Regra de MT (principal)", "Sensibilidade: `DAT_CON` em 2024 ou 2025"])
 
 
+def tabela_piso(R, cfg):
+    j = _j(R, "diagnostico/calibracao_piso.json")
+    pos, bt = j["posicionamento"], j["backtest"]
+    ref = pct(j["parte_do_chi_observado_nos_alimentadores_no_piso"], 0)
+    lin = []
+    for k in ("100", "200"):
+        t = pos[k]
+        lin.append(
+            [
+                f"Posicionamento (rede de {cfg['ano_atual']}): {k} primeiros locais",
+                f"{br(t['pontos_em_alimentadores_no_piso'])} de {k} ({pct(t['frac_dos_pontos'], 0)})",
+                f"{pct(t['frac_do_chi_evitado'], 0)} ({br(t['dec_min_nos_alimentadores_no_piso'], 1)} de {br(t['dec_min_total'], 1)} min)",
+            ]
+        )
+    sem = pos["100_sem_alimentadores_no_piso"]
+    lin.append(["... os 100 primeiros, sem alimentadores no piso (guloso refeito)", "0 de 100", f"{br(sem['dec_min'], 1)} min de DEC"])
+    for nome, t in (("instalações reais", bt["instalacoes_reais"]), ("locais do modelo", bt["locais_do_modelo_mesmo_numero"])):
+        lin.append(
+            [
+                f"Backtest (rede de {cfg['ano_backtest']}): {nome}",
+                f"{br(t['em_alimentadores_no_piso'])} de {br(t['n'])} ({pct(t['frac'], 0)})",
+                pct(t["frac_do_chi_evitado"], 0),
+            ]
+        )
+    r = bt["sem_alimentadores_no_piso"]
+    lin.append(
+        [
+            f"... razão locais do modelo / instalações reais, sem alimentadores no piso ({br(r['instalacoes_reais_localizadas'])} instalações)",
+            "",
+            f"{br(r['razao_modelo_sobre_real'], 1)}×",
+        ]
+    )
+    nota = (
+        f"*Referência: os alimentadores no piso têm {ref} do CHI observado de {cfg['ano_atual']} "
+        f"({br(j['alimentadores_com_historico']['no_piso'])} de {br(j['alimentadores_com_historico']['n'])} alimentadores) e "
+        f"{pct(bt['parte_do_chi_observado_nos_alimentadores_no_piso'], 0)} do de {cfg['ano_backtest']} "
+        f"({br(bt['alimentadores_no_piso_na_rede_de_2024'])} alimentadores).*"
+    )
+    return md(lin, ["", "Pontos em alimentadores no piso da calibração", "Parte do CHI evitado pelo modelo"]) + "\n\n" + nota
+
+
 def tabela_comparacao_mt(R, cfg):
     """Comparação descritiva com MT, por consumidor e por km. Lê os resultados publicados de MT, só para leitura."""
     mt = config.ROOT / "reports"
@@ -582,6 +623,7 @@ def tabela_destaques(R, cfg):
     q = _j(R, "qualidade_topologia.json")[str(cfg["ano_atual"])]
     d, b, sel = _j(R, "diagnostico.json"), _j(R, "backtest.json"), _j(R, "desempenho_2026.json")["seletividade"]
     dec = pd.read_csv(R.parent / "curva_k.csv").query("k == 100").set_index("metodo").dec_min
+    sem_piso = _j(R, "diagnostico/calibracao_piso.json")["posicionamento"]["100_sem_alimentadores_no_piso"]["dec_min"]
     i = pd.read_csv(R.parent / "backtest_instalacoes.csv")
     v, z, cr, auc = d["validacao_modelo"], d["zonas_religador_linha"], d["zonas_criticas"], b["auc_alimentador_recebeu_religador"]
     lin = [
@@ -613,11 +655,11 @@ def tabela_destaques(R, cfg):
         ],
         [
             f"Mesmo número de religadores ({br(b['religadores_comparados'])}), nos locais do modelo",
-            f"**{br(b['razao_modelo_sobre_real'], 0)}×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo (efeito do religador: {b['origem_efeito']})",
+            f"**{br(b['razao_modelo_sobre_real'], 0)}×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo",
         ],
         [
             "100 religadores novos, locais do modelo (rede 2025)",
-            f'**{br(dec["modelo (guloso)"], 0)} min de DEC/ano** evitados no modelo, contra {br(dec["extensao"], 0)} min da regra "dividir a zona com mais km" '
+            f'**{br(dec["modelo (guloso)"], 0)} min de DEC/ano** evitados no modelo (**{br(sem_piso, 0)} min** sem os alimentadores no piso da calibração), contra {br(dec["extensao"], 0)} min da regra "dividir a zona com mais km" '
             f"e {br(dec['aleatorio'], 0)} min de locais sorteados",
         ],
         [
@@ -649,6 +691,7 @@ TABELAS = {
     "k100": tabela_k100,
     "sensibilidade": tabela_sensibilidade,
     "backtest": tabela_backtest,
+    "piso": tabela_piso,
     "comparacao_mt": tabela_comparacao_mt,
     "destaques": tabela_destaques,
 }

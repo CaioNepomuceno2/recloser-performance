@@ -381,6 +381,16 @@ def test_ms_fumaca_seletividade_e_descritiva_e_lista_todos_os_elementos(ms_compl
     assert d["seletividade"]["alimentadores_elegiveis"] >= 1 and d["cobertura_vinculo_alimentador"] == 1.0
 
 
+def test_ms_fumaca_diagnostico_do_piso_da_calibracao(ms_completo):
+    with pytest.MonkeyPatch.context() as mp:
+        rodar("diagnostico_piso.py", ms_completo / "config.yaml", mp)
+    j = json.loads((ms_completo / "reports" / "ems" / "diagnostico" / "calibracao_piso.json").read_text())
+    assert j["origem_efeito"] == ROTULO and j["piso_da_calibracao"] == 0.2
+    assert {"100", "200", "100_sem_alimentadores_no_piso"} <= set(j["posicionamento"])
+    assert 0 <= j["parte_do_chi_observado_nos_alimentadores_no_piso"] <= 1
+    assert j["backtest"]["instalacoes_reais"]["n"] == 3 and j["backtest"]["locais_do_modelo_mesmo_numero"]["n"] == 3
+
+
 # ---------------------------------------------------------------- a porta de qualidade
 def test_porta_reprovada_so_deixa_diagnostico_e_a_causa(tmp_path, monkeypatch):
     arq = _montar(tmp_path, monkeypatch, quebrar=(2024, 2025))

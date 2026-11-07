@@ -23,8 +23,8 @@ regenerados por `scripts/01` a `06`; as tabelas são impressas por `scripts/tabe
 | Zonas de religador com menos de 50 clientes | **30%**, e a zona mediana tem 126 clientes |
 | Concentração do risco | **10% das zonas** de proteção respondem por **50%** do CHI esperado. 59% delas são zona da saída |
 | Onde a distribuidora instalou religadores em 2025 | Explicado sobretudo pela **extensão** do alimentador (AUC 0,73) e pelo CHI histórico (0,72), não pelos clientes (0,57). **43%** das instalações protegem menos de 50 clientes |
-| Mesmo número de religadores (268), nos locais do modelo | **6×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo (efeito do religador: transportado de MT) |
-| 100 religadores novos, locais do modelo (rede 2025) | **70 min de DEC/ano** evitados no modelo, contra 9 min da regra "dividir a zona com mais km" e 8 min de locais sorteados |
+| Mesmo número de religadores (268), nos locais do modelo | **6×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo |
+| 100 religadores novos, locais do modelo (rede 2025) | **70 min de DEC/ano** evitados no modelo (**59 min** sem os alimentadores no piso da calibração), contra 9 min da regra "dividir a zona com mais km" e 8 min de locais sorteados |
 | Disjuntor abrindo mais que o esperado (2026) | 6 de 91 alimentadores elegíveis. **Só descritivo**: o campo de elemento quase não registra disjuntor em MS |
 
 ## 1. A porta de qualidade e a topologia
@@ -98,7 +98,7 @@ como em MT. Em MS o CI do modelo é cerca de 3,6 vezes o observado, e **o piso d
 | Demais | 226 | 14,26 mi | 14,25 mi | 0,0% |
 
 Nos alimentadores fora do piso o modelo calibrado reproduz o CHI observado. Nos que ficam no piso, o CHI do modelo é maior que o observado. Não
-mexi no limite (seria ajustar premissa olhando resultado); a leitura dos ganhos tem que levar isso em conta. A explicação do descompasso não foi testada. Ela é compatível com
+mexi no limite (seria ajustar premissa olhando resultado); a leitura dos ganhos tem que levar isso em conta, e a seção 5 mede quanto do ganho vem desses alimentadores. A explicação do descompasso não foi testada. Ela é compatível com
 muitos registros de MS que afetam poucos clientes (no arquivo de 2026, as interrupções em `MEDIDOR` e `TRANSFORMADOR` têm 5 e 22 clientes em média).
 
 ## 3. Desempenho observado em 2026: quem abriu o circuito
@@ -160,6 +160,7 @@ de 2024 e sem religador de 2024 a menos de 100 m (a regra de MT); localizado a a
 * **O modelo não é o que melhor explica onde se instalou** (AUC menor que o da extensão e do CHI histórico): o backtest mede se a priorização por ganho de DEC
   reproduz a prática, e não reproduz. Isso não diz que a prática está errada (religador em linha longa também reduz patrulha, efeito que o modelo não captura).
 * **Mesmo número de religadores nos locais do modelo evita muito mais CHI que as instalações reais**, pelo mesmo modelo. É diferença entre locais com a mesma régua, não ganho medido em campo.
+  Mais da metade dos locais do modelo cai em alimentadores no piso da calibração (tabela da seção 5), mas a razão não depende deles: sem esses alimentadores, dos dois lados, ela continua a mesma.
 * **A comparação com o efeito do `valor.json` não valida o modelo.** Em MT, o `automation-impact` mediu o efeito em campo; em MS ele é o de MT (`origem_efeito`),
   aplicado à exposição de MS. Os campos `chi_evitado_ano_did_por_religador` e `fator_did_sobre_modelo` de `backtest.json` ficam, por isso, sem leitura.
 
@@ -213,6 +214,21 @@ Nos testes com redes pequenas ele coincide com a força bruta. As regras de comp
 | min_clientes=25 | 1,77 mi CH | 0,16 mi CH | 10,9× | 7% |
 | min_clientes=100 | 1,56 mi CH | 0,26 mi CH | 5,9× | 7% |
 
+* **Alimentadores no piso da calibração puxam o guloso.** O piso de 0,2 infla o ganho de cada candidato nesses alimentadores pelo mesmo fator, e o guloso os prefere:
+
+|  | Pontos em alimentadores no piso da calibração | Parte do CHI evitado pelo modelo |
+|---|---|---|
+| Posicionamento (rede de 2025): 100 primeiros locais | 40 de 100 (40%) | 37% (25,8 de 70,4 min) |
+| Posicionamento (rede de 2025): 200 primeiros locais | 89 de 200 (44%) | 40% (41,5 de 103,2 min) |
+| ... os 100 primeiros, sem alimentadores no piso (guloso refeito) | 0 de 100 | 58,6 min de DEC |
+| Backtest (rede de 2024): instalações reais | 70 de 268 (26%) | 59% |
+| Backtest (rede de 2024): locais do modelo | 151 de 268 (56%) | 59% |
+| ... razão locais do modelo / instalações reais, sem alimentadores no piso (198 instalações) |  | 6,0× |
+
+*Referência: os alimentadores no piso têm 26% do CHI observado de 2025 (124 de 350 alimentadores) e 39% do de 2024 (152 alimentadores).*
+
+  Os alimentadores no piso têm uma parte menor do CHI observado do que a que o guloso leva deles. É **viés de ranking** para eles, e não só de nível. Refeito sem esses alimentadores, os 100 primeiros evitam
+  menos DEC (linha da tabela). O número principal da tabela de destaques depende desses alimentadores, e o menor é o que sobra quando eles saem. O backtest não muda: a razão de locais do modelo sobre instalações reais fica igual sem eles.
 * **Sem a calibração por alimentador** o modelo chega a mais DEC, e a regra por extensão a menos: a razão vai a 20×. A conclusão (locais do modelo evitam várias vezes o DEC da regra por extensão) vale em todos os cenários, mas **a ordem de grandeza do ganho absoluto depende da calibração, que em MS tem a limitação descrita na seção 2.**
 
 ![mapa](../reports/ems/figures/02_mapa.png)
@@ -276,6 +292,8 @@ python scripts/04_backtest.py     --config configs/params_ems.yaml
 python scripts/05_otimizacao.py   --config configs/params_ems.yaml
 python scripts/06_figuras.py      --config configs/params_ems.yaml
 python scripts/diagnostico_topologia.py --config configs/params_ems.yaml
+python scripts/diagnostico_piso.py --config configs/params_ems.yaml          # parte do ganho em alimentadores no piso da calibração
+python scripts/guarda_mt.py --base 7cedd3d --novo HEAD                      # guarda de MT: saídas do código novo = as do anterior
 ```
 
 Pré-requisitos (clones irmãos, nos caminhos de `configs/params_ems.yaml`): `distribution-asset-risk` (`data/ems/interim/falhas.parquet` e `interrupcoes_ems.parquet`) e
