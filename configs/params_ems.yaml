@@ -1,0 +1,75 @@
+# Energisa MS (EMS, código ANEEL 404): mesmo estudo de configs/params.yaml, com outro recorte de dados e saídas em subpastas "ems".
+# Uso: python scripts/NN_*.py --config configs/params_ems.yaml   (ou RECLOSER_CONFIG=configs/params_ems.yaml).
+# Nada aqui foi calibrado olhando resultado de MS: as premissas são as de MT (ver docs/decisoes_ems.md).
+distribuidora: EMS
+nome: Energisa MS
+cache_bdgd: data/ems/bdgd      # saída de scripts/00_cache_bdgd.py (Parquet por ano); fora do git
+bdgd:
+  zips: ../../bdgd-cache/ems   # cache local SOMENTE LEITURA com bdgd_<ano>_<item>.gdb.zip; nada é baixado nem modificado lá
+  extremos_segmentos: true     # grava os extremos de cada segmento, para conferir a codificação do PAC contra a geometria
+snapshots_bdgd:                # id do item no ArcGIS Hub da ANEEL (BDGD de 31/12 de cada ano, versão mais recente de cada ano)
+  2018: 5382c59d7cc7494a9a1f8cd865187457   # Energisa_MS_404_2018-12-31_M10_20191023-2327
+  2019: b83ad867a35b43189f41b68988f7f0b6   # Energisa_MS_404_2019-12-31_M10_20200323-1921
+  2020: fe56dce0714f4b6795d3b23130f5898a   # Energisa_MS_404_2020-12-31_M10_20210628-1527
+  2021: 933af69c57dd41ea8f6048118b8d07e7   # Energisa_MS_404_2021-12-31_V10_20230315-1800
+  2022: ff5242147c86428e88971941a35c7cd1   # Energisa_MS_404_2022-12-31_V11_20240422-2036
+  2023: 975f18dfdb0c479cb237893c5b296ca9   # Energisa_MS_404_2023-12-31_V11_20250923-1616 (não usar b8c585ae..., de 17/12/2024)
+  2024: b7fad4cd388845a08a01643599ec747b   # Energisa_MS_404_2024-12-31_V11_20250730-1637
+  2025: 9a1ce360865f4358b31e9fb2d016aac9   # Energisa_MS_404_2025-12-31_V11_20260830-0339
+ano_atual: 2025                # snapshot usado no diagnóstico e na otimização
+ano_backtest: 2024             # snapshot usado para testar a priorização contra as instalações de 2025
+
+paths:
+  reports: reports/ems         # resultados publicados; MT fica em reports/
+  processed: data/ems/processed
+
+# Bases geradas pelo projeto distribution-asset-risk para MS
+falhas: ../distribution-asset-risk/data/ems/interim/falhas.parquet
+interrupcoes: ../distribution-asset-risk/data/ems/interim/interrupcoes_ems.parquet
+# Valoração e efeito do religador (projeto automation-impact). Em MS o efeito é "transportado de MT" (não medido em MS):
+# toda saída que depende dele repete o campo origem_efeito.
+valor_json: ../automation-impact/reports/ems/valor.json
+exigir_origem_efeito: true
+
+alimentador:
+  largura_nome: 6              # falhas.alimentador de MS é CTMT.NOME completado com zeros até 6 caracteres (0RBR53)
+crs_pac: 31981                 # PAC de 19 a 20 caracteres = X e Y em cm no SIRGAS 2000 / UTM 21S, o estado todo (docs/decisoes_ems.md, seção 2)
+qualidade:
+  min_frac_uc_alcancadas: 0.95 # porta pré-registrada: sem isso, nada de local de religador nem de backtest
+mapa:
+  lat_aspecto: -21            # latitude média de MS, só para a proporção do mapa
+
+tip_unid:                      # PRODIST Módulo 10, domínio TUNI (mesmos códigos de MT; conferidos em MS na base)
+  religador: ["32"]
+  seccionalizador: ["35", "36"]
+  fusivel: ["22", "23", "24", "25", "26", "27"]
+  disjuntor: ["29", "30", "53"]
+
+topologia:
+  max_gap_m: 500               # lacuna máxima para religar um componente desconectado ao alimentador
+
+confiabilidade:
+  anos_taxa: [2023, 2024, 2025]
+  tau: 0.5                     # fração de faltas transitórias eliminadas por religamento (premissa de MT; sensibilidade 0,3–0,7)
+  fator_calibracao_min: 0.2
+  fator_calibracao_max: 5.0
+
+otimizacao:
+  ks: [25, 50, 100, 200]
+  min_clientes: 50
+  max_religadores_em_serie: 3
+  sorteios_aleatorio: 10
+
+valor:
+  custo_religador_rs: 160000   # ilustrativo, igual ao automation-impact
+  vida_anos: 20
+  taxa_desconto: 0.08
+
+backtest:
+  raio_novo_m: 100             # religador de 2025 sem religador de 2024 a menos disso conta como instalação nova
+  raio_localizacao_m: 50       # distância máxima até o nó da rede de 2024
+  # sensibilidade pré-registrada (docs/decisoes_ems.md): instalação nova só com DAT_CON no ano de 2024 ou 2025
+  anos_data_confirmada: [2024, 2025]
+
+figuras:
+  elementos: [DISJUNTOR, RELIGADOR, CHAVE SECCIONADORA, CHAVE FUSIVEL, TRANSFORMADOR, MEDIDOR, NAO IDENTIFICADO]

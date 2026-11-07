@@ -22,10 +22,10 @@ class Estudo:
 
 def preparar(cfg: dict, ano: int, anos_taxa: list[int], tau: float | None = None) -> Estudo:
     tau = cfg["confiabilidade"]["tau"] if tau is None else tau
-    proc = config.ROOT / "data" / "processed"
+    proc = config.pasta_processada(cfg)
     nos = pd.read_parquet(proc / f"nos_{ano}.parquet")
     al = pd.read_parquet(proc / f"alimentadores_{ano}.parquet")
-    hist = dados.historico_alimentador(cfg["falhas"], al, anos_taxa)
+    hist = dados.historico_alimentador(cfg["falhas"], al, anos_taxa, cfg.get("alimentador", {}).get("largura_nome", 0))
     km = nos.groupby("ctmt").comp_m.sum() / 1000
     taxa_m = (hist.falhas_ano / (km.reindex(hist.index) * 1000)).replace([np.inf, -np.inf], np.nan).dropna()
 
