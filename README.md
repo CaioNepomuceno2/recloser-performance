@@ -12,6 +12,8 @@ calcula a **zona de proteção** de cada religador: quantos clientes e quantos k
 isso com as **interrupções de 2026**, que agora informam qual equipamento abriu o circuito. Por fim, um modelo de
 confiabilidade por zonas, validado contra o histórico, escolhe **onde instalar os próximos religadores**.
 
+> Também roda para a **Energisa MS**, com os resultados e as ressalvas na seção [Energisa MS](#energisa-ms).
+
 ## Resultados em uma tela
 
 | | |
@@ -216,6 +218,42 @@ disjuntor abre bem mais do que a topologia explica.
 ## Metodologia
 O detalhamento está em [`docs/metodologia.md`](docs/metodologia.md): grafo e reparo de topologia, zonas, modelo de
 confiabilidade e calibração, otimização, backtest, sinal de seletividade, premissas e interpretação de cada número.
+
+## Energisa MS
+
+O mesmo estudo roda para a **Energisa Mato Grosso do Sul** (código ANEEL 404) com `--config configs/params_ems.yaml`. As saídas ficam em
+[`reports/ems/`](reports/ems/) e os resultados de MT não mudam. Os diagnósticos de dados e a **porta de qualidade pré-registrada** (a árvore
+precisa ligar pelo menos 95% dos clientes à saída do alimentador para publicar locais de religador e backtest) foram escritos antes de qualquer resultado:
+[`docs/decisoes_ems.md`](docs/decisoes_ems.md). Os resultados completos estão em [`docs/resultados_ems.md`](docs/resultados_ems.md).
+
+> **O efeito do religador não foi medido em MS.** O `valor.json` de MS (projeto `automation-impact`) traz `origem_efeito = "transportado de MT"`: o efeito
+> por religador é o de MT aplicado à exposição de MS. Toda saída daqui que lê esse arquivo repete o rótulo `origem_efeito`. Os ganhos de DEC são **do modelo de zonas**, não medidas de campo.
+
+|  |  |
+|---|---|
+| Topologia reconstruída | **99,999%** dos 1,40 milhão de clientes ligados à saída do seu alimentador (mínimo pré-registrado: 95%) |
+| Modelo de zonas x CI observado por alimentador | Spearman **0,82** (349 alimentadores, 2023-2025). O CI do modelo é 3,6 vezes o observado (razão mediana 0,28) |
+| Religadores de linha (com clientes a jusante) | **1.721**. Outros 214 fazem papel de disjuntor de saída na subestação |
+| Zonas de religador com menos de 50 clientes | **30%**, e a zona mediana tem 126 clientes |
+| Concentração do risco | **10% das zonas** de proteção respondem por **50%** do CHI esperado. 59% delas são zona da saída |
+| Onde a distribuidora instalou religadores em 2025 | Explicado sobretudo pela **extensão** do alimentador (AUC 0,73) e pelo CHI histórico (0,72), não pelos clientes (0,57). **43%** das instalações protegem menos de 50 clientes |
+| Mesmo número de religadores (268), nos locais do modelo | **6×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo (efeito do religador: transportado de MT) |
+| 100 religadores novos, locais do modelo (rede 2025) | **70 min de DEC/ano** evitados no modelo, contra 9 min da regra "dividir a zona com mais km" e 8 min de locais sorteados |
+| Disjuntor abrindo mais que o esperado (2026) | 6 de 91 alimentadores elegíveis. **Só descritivo**: o campo de elemento quase não registra disjuntor em MS |
+
+![curva MS](reports/ems/figures/01_curva_k.png)
+
+* **A porta passou.** A topologia de 2025 liga 99,999% dos clientes à saída do alimentador (2024: 99,997%), contra 99,9% em MT. Os PAC de MS codificam a coordenada em UTM 21S para o estado todo, como em MT; foi conferido contra a geometria da BDGD
+  (`decisoes_ems.md`, seção 2).
+* **O guloso é uma heurística** com restrição de religadores em série. A garantia de 63% do guloso clássico não está demonstrada com essa restrição, e não é prometida.
+* **Comparação com MT, só descritiva** (`resultados_ems.md`, seção 7): MS tem 3,6 vezes mais falhas por km nos registros da ANEEL e o modelo de zonas se ajusta pior (o CI do modelo é cerca de 3,6 vezes o observado, e 35% dos alimentadores ficam no piso da calibração).
+* **Limites.** A calibração em MS é mais frágil que em MT (`resultados_ems.md`, seção 2). O backtest infere "instalação nova" de dois cadastros que misturam instalação, remanejamento e recadastramento: a regra de MT é a principal e uma sensibilidade por `DAT_CON` sai ao lado. 2026 não tem
+  nenhum registro em março, e o campo de elemento quase não registra disjuntor, então o sinal de seletividade é só descritivo.
+
+```bash
+python scripts/00_cache_bdgd.py --config configs/params_ems.yaml    # lê os zips locais da BDGD de MS (cache somente leitura)
+python scripts/01_topologia.py  --config configs/params_ems.yaml    # e 02 a 06, com o mesmo --config (ou RECLOSER_CONFIG)
+```
 
 ## Reproduzir
 

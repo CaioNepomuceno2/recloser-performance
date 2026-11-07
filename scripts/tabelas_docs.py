@@ -261,6 +261,373 @@ def tabela_instalacoes(R, cfg):
     return md(linhas, ["", "Valor"])
 
 
+# ---------------------------------------------------------------- resultados
+# ``R`` continua sendo a pasta ``diagnostico``; os resultados ficam em ``R.parent``.
+def _j(R, nome):
+    return json.loads((R.parent / nome).read_text(encoding="utf-8"))
+
+
+def mi(v, d=2):
+    return br(v / 1e6, d) + " mi"
+
+
+def tabela_topologia(R, cfg):
+    anos = [cfg["ano_atual"], cfg["ano_backtest"]]
+    q = _j(R, "qualidade_topologia.json")
+    dg = {a: json.loads((R / f"topologia_{a}.json").read_text(encoding="utf-8")) for a in anos}
+    pt = _j(R, "porta_qualidade.json")
+    lin = [
+        ("Circuitos", lambda a: br(q[str(a)]["alimentadores"])),
+        ("Nós da rede (PAC)", lambda a: br(q[str(a)]["nos_total"])),
+        ("Clientes ligados a um transformador ou PAC", lambda a: br(q[str(a)]["uc_total"])),
+        (
+            "**Ligados à saída do alimentador, depois do reparo (a porta)**",
+            lambda a: f"**{br(q[str(a)]['uc_alcancadas'])} ({pct(q[str(a)]['frac_uc_alcancadas'], 3)})**",
+        ),
+        (
+            "Mínimo pré-registrado e veredito",
+            lambda a: f"{pct(pt[str(a)]['minimo'], 0)}: {'passou' if pt[str(a)]['passou'] else 'NÃO passou'}",
+        ),
+        ("Antes do reparo de lacunas", lambda a: pct(dg[a]["antes_do_reparo"]["frac_uc_alcancadas"], 2)),
+        (
+            "Componentes religados (lacuna mediana; P90)",
+            lambda a: (
+                f"{br(q[str(a)]['componentes_religados'])} ({br(q[str(a)]['lacuna_mediana_m'], 1)} m; {br(q[str(a)]['lacuna_p90_m'], 1)} m)"
+            ),
+        ),
+        (
+            "Clientes alcançados no mesmo circuito do cadastro",
+            lambda a: pct(dg[a]["consistencia_de_circuito"]["frac_clientes_no_mesmo_circuito_do_cadastro"], 2),
+        ),
+        ("Chaves normalmente abertas (fora do grafo)", lambda a: br(q[str(a)]["chaves_normalmente_abertas"])),
+        ("Circuitos sem saída no grafo", lambda a: br(q[str(a)]["alimentadores_sem_saida_no_grafo"])),
+    ]
+    return md([[r] + [f(a) for a in anos] for r, f in lin], ["", *map(str, anos)])
+
+
+def tabela_inventario(R, cfg):
+    j = _j(R, "diagnostico.json")["inventario"]
+    lin = [
+        ("Total", j["religadores_no_cadastro"]),
+        ("Normalmente abertos (pontos de interligação)", j["religadores_normalmente_abertos"]),
+        ("De linha, com clientes a jusante", j["religadores_de_linha_com_clientes"]),
+        ("De saída: na subestação, antes do início do alimentador", j["religadores_de_saida"]),
+        ("Sem clientes a jusante, outros casos de cadastro", j["religadores_sem_clientes_outros"]),
+        ("Com telecomando (`TLCD = 1`)", j["religadores_telecomandados_cadastro"]),
+    ]
+    return md([[a, br(b)] for a, b in lin], [f"Religadores no cadastro ({cfg['ano_atual']})", ""])
+
+
+def tabela_zonas(R, cfg):
+    d = _j(R, "diagnostico.json")
+    z, s, c, r, v = (
+        d["zonas_religador_linha"],
+        d["zonas_saida"],
+        d["zonas_criticas"],
+        d["alimentadores_sem_religador_de_linha"],
+        d["validacao_modelo"],
+    )
+    lin = [
+        ("Zonas de religador de linha", br(z["n"])),
+        ("Clientes na zona: mediana e P90", f"{br(z['clientes_zona_mediana'])} e {br(z['clientes_zona_p90'])}"),
+        ("Rede na zona: mediana e P90 (km)", f"{br(z['km_zona_mediana'], 1)} e {br(z['km_zona_p90'], 1)}"),
+        ("Zonas com menos de 50 clientes", pct(z["frac_com_menos_de_50_clientes_na_zona"])),
+        ("Zona da saída: clientes e km (medianas)", f"{br(s['clientes_zona_mediana'])} e {br(s['km_zona_mediana'], 1)}"),
+        ("Zonas de proteção (saída, religador de linha, seccionalizador)", br(c["zonas"])),
+        ("As 10% mais críticas: parte do CHI esperado", pct(c["top10pct_frac_chi_esperado"], 0)),
+        ("... das quais zona da saída", pct(c["top10pct_frac_saida"], 0)),
+        (
+            "Alimentadores sem religador de linha (parte dos clientes e da rede)",
+            f"{br(r['n'])} ({pct(r['frac_uc'])} e {pct(r['frac_km'])})",
+        ),
+        ("... entre os 25% mais longos", br(r["longos_sem_religador_n"])),
+        (
+            "Rede de MT (km) e falhas por 100 km por ano",
+            f"{br(d['rede']['km_mt'])} e {br(d['rede']['falhas_mt_por_100km_ano'], 1)}",
+        ),
+        (
+            "Modelo x CI observado: Spearman (alimentadores)",
+            f"{br(v['spearman_ci_modelo_vs_observado'], 2)} ({br(v['alimentadores'])})",
+        ),
+        ("CI observado sobre CI do modelo: razão mediana", br(v["razao_ci_observado_sobre_modelo_mediana"], 2)),
+    ]
+    return md([[a, b] for a, b in lin], ["", f"{cfg['ano_atual']}"])
+
+
+def tabela_calibracao(R, cfg):
+    a = pd.read_csv(R.parent / "alimentadores.csv", dtype={"NOME": str}).dropna(subset=["chi_ano", "ci_ano"])
+    lim = cfg["confiabilidade"]
+    a = a.assign(razao=a.ci_ano / a.ci_modelo, chi_mod=a.ci_modelo * a.chi_por_ci)
+    piso, resto = a[a.razao < lim["fator_calibracao_min"]], a[a.razao >= lim["fator_calibracao_min"]]
+
+    def dif(g):
+        v = round(100 * (g.chi_mod.sum() / g.chi_ano.sum() - 1), 1) + 0.0
+        return ("+" if v > 0 else "") + br(v, 1) + "%"
+
+    def lin(rot, g):
+        return [rot, br(len(g)), mi(g.chi_ano.sum()), mi(g.chi_mod.sum()), dif(g)]
+
+    return md(
+        [
+            lin("Todos os alimentadores com histórico", a),
+            lin(f"Razão CI observado / CI do modelo abaixo de {br(lim['fator_calibracao_min'], 1)} (no piso da calibração)", piso),
+            lin("Demais", resto),
+        ],
+        ["Grupo", "Alimentadores", "CHI observado (média anual)", "CHI do modelo calibrado", "Modelo sobre observado"],
+    )
+
+
+def tabela_elementos_desempenho(R, cfg):
+    d = pd.read_csv(R.parent / "desempenho_elemento_2026.csv")
+    return md(
+        [
+            [r.elemento, br(r.interrupcoes), br(r.uc_por_evento_media), br(r.duracao_mediana_h, 1) + " h", pct(r.frac_chi, 0)]
+            for r in d.itertuples()
+        ],
+        ["Elemento que abriu", "Interrupções", "Clientes por interrupção (média)", "Duração mediana", "Parte do CHI"],
+    )
+
+
+def tabela_seletividade(R, cfg):
+    d = _j(R, "desempenho_2026.json")
+    s = d["seletividade"]
+    lin = [
+        ("Interrupções de MT de 2026 (jan-jul, sem março)", br(d["interrupcoes_mt_2026"])),
+        ("Casam com um circuito do cadastro de 2025", pct(d["cobertura_vinculo_alimentador"])),
+        (
+            "Alimentadores elegíveis (saída por disjuntor, religador de linha, 10 ou mais aberturas)",
+            br(s["alimentadores_elegiveis"]),
+        ),
+        ("Com o disjuntor abrindo mais que o esperado (Benjamini-Hochberg, 5%)", br(s["alimentadores_com_suspeita"])),
+        (
+            "Fração de aberturas do disjuntor: esperada e observada (medianas)",
+            f"{pct(s['frac_disjuntor_esperada_mediana'], 0)} e {pct(s['frac_disjuntor_observada_mediana'], 0)}",
+        ),
+        (
+            "Spearman do CHI do modelo com o CHI de 2026 (alimentadores)",
+            f"{br(d['modelo_vs_2026']['spearman_chi_modelo_vs_chi_2026'], 2)} ({br(d['modelo_vs_2026']['alimentadores'])})",
+        ),
+    ]
+    return md([[a, b] for a, b in lin], ["", ""])
+
+
+def tabela_curva(R, cfg):
+    p = pd.read_csv(R.parent / "curva_k.csv").pivot(index="k", columns="metodo", values="dec_min")
+    return md(
+        [
+            [br(k)] + [br(p.loc[k, m_], 1) + " min" for m_ in ["modelo (guloso)", "extensao", "clientes", "aleatorio"]]
+            for k in p.index
+        ],
+        [
+            "Religadores novos",
+            "Modelo (guloso)",
+            "Dividir a zona com mais km",
+            "Dividir a zona com mais clientes",
+            "Local sorteado",
+        ],
+    )
+
+
+def tabela_valor(R, cfg):
+    c = pd.read_csv(R.parent / "curva_k.csv")
+    g = c[c.metodo == "modelo (guloso)"].set_index("k")
+    lin = [
+        [
+            br(k),
+            mi(g.loc[k, "chi_evitado_ano"]),
+            br(g.loc[k, "dec_min"], 1),
+            "R$ " + mi(g.loc[k, "rs_ano_social"], 1),
+            "R$ " + mi(g.loc[k, "vpl_social_rs"], 1),
+            "R$ " + mi(g.loc[k, "vpl_compensacao_rs"], 1),
+        ]
+        for k in g.index
+    ]
+    return md(
+        lin,
+        [
+            "Religadores novos (guloso)",
+            "CHI evitado por ano",
+            "DEC evitado (min/ano)",
+            "R$/ano, visão social",
+            "VPL social (20 anos)",
+            "VPL só com compensações",
+        ],
+    )
+
+
+def tabela_k100(R, cfg):
+    k = _j(R, "otimizacao.json")["k100"]
+    return md(
+        [
+            ["Payback social mediano", br(k["payback_social_mediano_anos"], 1) + " ano(s)"],
+            ["Pontos com VPL social positivo", pct(k["vpl_positivo_frac"], 0)],
+            ["Trocas de fusível por religador", pct(k["frac_troca_fusivel"], 0)],
+            ["Alimentadores atendidos", br(k["alimentadores"])],
+        ],
+        ["Os 100 primeiros locais", ""],
+    )
+
+
+def tabela_sensibilidade(R, cfg):
+    d = pd.read_csv(R.parent / "sensibilidade.csv")
+    return md(
+        [
+            [
+                r.cenario,
+                mi(r.guloso_chi) + " CH",
+                mi(r.extensao_chi) + " CH",
+                br(r.razao_guloso_extensao, 1) + "×",
+                pct(r.frac_troca_fusivel, 0),
+            ]
+            for r in d.itertuples()
+        ],
+        ["Cenário (100 religadores)", "Modelo", "Regra por extensão", "Razão", "Troca de fusível"],
+    )
+
+
+def tabela_backtest(R, cfg):
+    b = _j(R, "backtest.json")
+    s = b["sensibilidade_dat_con_no_periodo"]
+    i = pd.read_csv(R.parent / "backtest_instalacoes.csv")
+    sub = i[i.DAT_CON.astype(str).str[-4:].isin([str(a) for a in s["anos_dat_con"]])]
+    ba, sa = b["auc_alimentador_recebeu_religador"], s["auc_alimentador_recebeu_religador"]
+    lin = [
+        ("Religadores novos", br(b["religadores_novos"]), br(s["religadores_novos"])),
+        (
+            "Localizados a até 50 m de um nó da rede de 2024",
+            br(b["localizados_na_rede_anterior"]),
+            br(s["localizados_na_rede_anterior"]),
+        ),
+        ("Alimentadores que receberam", br(b["alimentadores_que_receberam"]), br(s["alimentadores_que_receberam"])),
+        ("AUC: extensão do alimentador", br(ba["extensao_km"], 2), br(sa["extensao_km"], 2)),
+        ("AUC: CHI histórico", br(ba["chi_historico"], 2), br(sa["chi_historico"], 2)),
+        ("AUC: modelo (maior ganho)", br(ba["modelo_maior_ganho"], 2), br(sa["modelo_maior_ganho"], 2)),
+        ("AUC: clientes", br(ba["clientes"], 2), br(sa["clientes"], 2)),
+        (
+            "Instalações com menos de 50 clientes a jusante",
+            pct((i.uc_jusante < 50).mean(), 0),
+            pct((sub.uc_jusante < 50).mean(), 0),
+        ),
+        (
+            "Instalações dentro de ramal com fusível",
+            pct(b["frac_dentro_de_ramal_com_fusivel"], 0),
+            pct(s["frac_dentro_de_ramal_com_fusivel"], 0),
+        ),
+        ("Instalações com ganho no modelo", pct(b["frac_com_ganho_no_modelo"], 0), pct(s["frac_com_ganho_no_modelo"], 0)),
+        (
+            "Instalações no top 10% dos candidatos",
+            pct(b["frac_no_top10pct_dos_candidatos"], 0),
+            pct(s["frac_no_top10pct_dos_candidatos"], 0),
+        ),
+        (
+            "CHI evitado por ano, instalações reais (modelo)",
+            br(b["chi_evitado_ano_instalacoes_reais_modelo"] / 1e3) + " mil",
+            br(s["chi_evitado_ano_instalacoes_reais_modelo"] / 1e3) + " mil",
+        ),
+        (
+            "CHI evitado por ano, mesmo número de locais do modelo",
+            br(b["chi_evitado_ano_mesmo_numero_no_modelo"] / 1e3) + " mil",
+            br(s["chi_evitado_ano_mesmo_numero_no_modelo"] / 1e3) + " mil",
+        ),
+        (
+            "Razão (locais do modelo / instalações reais)",
+            br(b["razao_modelo_sobre_real"], 1) + "×",
+            br(s["razao_modelo_sobre_real"], 1) + "×",
+        ),
+    ]
+    return md([list(x) for x in lin], ["", "Regra de MT (principal)", "Sensibilidade: `DAT_CON` em 2024 ou 2025"])
+
+
+def tabela_comparacao_mt(R, cfg):
+    """Comparação descritiva com MT, por consumidor e por km. Lê os resultados publicados de MT, só para leitura."""
+    mt = config.ROOT / "reports"
+    ms_d, mt_d = _j(R, "diagnostico.json"), json.loads((mt / "diagnostico.json").read_text(encoding="utf-8"))
+    ms_b, mt_b = _j(R, "backtest.json"), json.loads((mt / "backtest.json").read_text(encoding="utf-8"))
+    ms_q = _j(R, "qualidade_topologia.json")[str(cfg["ano_atual"])]
+    mt_q = json.loads((mt / "qualidade_topologia.json").read_text(encoding="utf-8"))["2025"]
+    ms_c, mt_c = pd.read_csv(R.parent / "curva_k.csv"), pd.read_csv(mt / "curva_k.csv")
+    ms_i, mt_i = pd.read_csv(R.parent / "backtest_instalacoes.csv"), pd.read_csv(mt / "backtest_instalacoes.csv")
+
+    def dec(c, met):
+        return br(c[(c.k == 100) & (c.metodo == met)].dec_min.iloc[0], 1)
+
+    def par(rot, f):
+        return [rot, f(mt_d, mt_b, mt_q, mt_c, mt_i), f(ms_d, ms_b, ms_q, ms_c, ms_i)]
+
+    def km(d):
+        return d["rede"]["km_mt"]
+
+    lin = [
+        par("Rede de MT (km)", lambda d, b, q, c, i: br(km(d))),
+        par("Clientes ligados à saída", lambda d, b, q, c, i: br(q["uc_alcancadas"])),
+        par("Clientes por km de rede", lambda d, b, q, c, i: br(q["uc_alcancadas"] / km(d), 1)),
+        par("Falhas de MT por 100 km por ano (registros da ANEEL, 2023-2025)", lambda d, b, q, c, i: br(d["rede"]["falhas_mt_por_100km_ano"], 1)),
+        par("Religadores de linha por 100 km", lambda d, b, q, c, i: br(100 * d["inventario"]["religadores_de_linha_com_clientes"] / km(d), 2)),
+        par("Religadores de linha por 100 mil clientes", lambda d, b, q, c, i: br(1e5 * d["inventario"]["religadores_de_linha_com_clientes"] / q["uc_alcancadas"], 0)),
+        par("Zona mediana de religador de linha: clientes", lambda d, b, q, c, i: br(d["zonas_religador_linha"]["clientes_zona_mediana"])),
+        par("Zonas de religador com menos de 50 clientes", lambda d, b, q, c, i: pct(d["zonas_religador_linha"]["frac_com_menos_de_50_clientes_na_zona"], 0)),
+        par("10% das zonas: parte do CHI esperado", lambda d, b, q, c, i: pct(d["zonas_criticas"]["top10pct_frac_chi_esperado"], 0)),
+        par("Modelo x CI observado: Spearman", lambda d, b, q, c, i: br(d["validacao_modelo"]["spearman_ci_modelo_vs_observado"], 2)),
+        par("CI observado sobre CI do modelo (mediana)", lambda d, b, q, c, i: br(d["validacao_modelo"]["razao_ci_observado_sobre_modelo_mediana"], 2)),
+        par("Backtest: AUC da extensão", lambda d, b, q, c, i: br(b["auc_alimentador_recebeu_religador"]["extensao_km"], 2)),
+        par("Backtest: AUC dos clientes", lambda d, b, q, c, i: br(b["auc_alimentador_recebeu_religador"]["clientes"], 2)),
+        par("Backtest: instalações com menos de 50 clientes a jusante", lambda d, b, q, c, i: pct((i.uc_jusante < 50).mean(), 0)),
+        par("DEC evitado com 100 religadores: modelo (min/ano)", lambda d, b, q, c, i: dec(c, "modelo (guloso)")),
+        par("DEC evitado com 100 religadores: regra por extensão (min/ano)", lambda d, b, q, c, i: dec(c, "extensao")),
+    ]
+    return md(lin, ["", "Energisa MT", "Energisa MS"])
+
+
+def tabela_destaques(R, cfg):
+    q = _j(R, "qualidade_topologia.json")[str(cfg["ano_atual"])]
+    d, b, sel = _j(R, "diagnostico.json"), _j(R, "backtest.json"), _j(R, "desempenho_2026.json")["seletividade"]
+    dec = pd.read_csv(R.parent / "curva_k.csv").query("k == 100").set_index("metodo").dec_min
+    i = pd.read_csv(R.parent / "backtest_instalacoes.csv")
+    v, z, cr, auc = d["validacao_modelo"], d["zonas_religador_linha"], d["zonas_criticas"], b["auc_alimentador_recebeu_religador"]
+    lin = [
+        [
+            "Topologia reconstruída",
+            f"**{pct(q['frac_uc_alcancadas'], 3)}** dos {br(q['uc_total'] / 1e6, 2)} milhão de clientes ligados à saída do seu alimentador (mínimo pré-registrado: 95%)",
+        ],
+        [
+            "Modelo de zonas x CI observado por alimentador",
+            f"Spearman **{br(v['spearman_ci_modelo_vs_observado'], 2)}** ({br(v['alimentadores'])} alimentadores, 2023-2025). O CI do modelo é "
+            f"{br(1 / v['razao_ci_observado_sobre_modelo_mediana'], 1)} vezes o observado (razão mediana {br(v['razao_ci_observado_sobre_modelo_mediana'], 2)})",
+        ],
+        [
+            "Religadores de linha (com clientes a jusante)",
+            f"**{br(d['inventario']['religadores_de_linha_com_clientes'])}**. Outros {br(d['inventario']['religadores_de_saida'])} fazem papel de disjuntor de saída na subestação",
+        ],
+        [
+            "Zonas de religador com menos de 50 clientes",
+            f"**{pct(z['frac_com_menos_de_50_clientes_na_zona'], 0)}**, e a zona mediana tem {br(z['clientes_zona_mediana'])} clientes",
+        ],
+        [
+            "Concentração do risco",
+            f"**10% das zonas** de proteção respondem por **{pct(cr['top10pct_frac_chi_esperado'], 0)}** do CHI esperado. {pct(cr['top10pct_frac_saida'], 0)} delas são zona da saída",
+        ],
+        [
+            "Onde a distribuidora instalou religadores em 2025",
+            f"Explicado sobretudo pela **extensão** do alimentador (AUC {br(auc['extensao_km'], 2)}) e pelo CHI histórico ({br(auc['chi_historico'], 2)}), não pelos "
+            f"clientes ({br(auc['clientes'], 2)}). **{pct((i.uc_jusante < 50).mean(), 0)}** das instalações protegem menos de 50 clientes",
+        ],
+        [
+            f"Mesmo número de religadores ({br(b['religadores_comparados'])}), nos locais do modelo",
+            f"**{br(b['razao_modelo_sobre_real'], 0)}×** o CHI evitado das instalações reais, avaliado pelo mesmo modelo (efeito do religador: {b['origem_efeito']})",
+        ],
+        [
+            "100 religadores novos, locais do modelo (rede 2025)",
+            f'**{br(dec["modelo (guloso)"], 0)} min de DEC/ano** evitados no modelo, contra {br(dec["extensao"], 0)} min da regra "dividir a zona com mais km" '
+            f"e {br(dec['aleatorio'], 0)} min de locais sorteados",
+        ],
+        [
+            "Disjuntor abrindo mais que o esperado (2026)",
+            f"{br(sel['alimentadores_com_suspeita'])} de {br(sel['alimentadores_elegiveis'])} alimentadores elegíveis. **Só descritivo**: o campo de elemento quase não registra disjuntor em MS",
+        ],
+    ]
+    return md(lin, ["", ""])
+
+
 TABELAS = {
     "pac": tabela_pac,
     "formato_pac": tabela_formato_pac,
@@ -271,6 +638,19 @@ TABELAS = {
     "cobertura_2026": tabela_cobertura_2026,
     "elementos_2026": tabela_elementos_2026,
     "instalacoes": tabela_instalacoes,
+    "topologia": tabela_topologia,
+    "inventario": tabela_inventario,
+    "zonas": tabela_zonas,
+    "calibracao": tabela_calibracao,
+    "elementos_desempenho": tabela_elementos_desempenho,
+    "seletividade": tabela_seletividade,
+    "curva": tabela_curva,
+    "valor": tabela_valor,
+    "k100": tabela_k100,
+    "sensibilidade": tabela_sensibilidade,
+    "backtest": tabela_backtest,
+    "comparacao_mt": tabela_comparacao_mt,
+    "destaques": tabela_destaques,
 }
 
 if __name__ == "__main__":
