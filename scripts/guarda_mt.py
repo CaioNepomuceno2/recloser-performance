@@ -1,6 +1,7 @@
 """Guarda de MT: o código novo, com a configuração padrão, grava exatamente o que o código anterior gravava.
 
-Cria dois ``git worktree`` temporários (``--base``, o commit anterior às mudanças de multi-distribuidora, e ``--novo``), gera a mesma
+Cria dois ``git worktree`` temporários (``--base``, o commit anterior às mudanças de multi-distribuidora, e ``--novo``),
+gera a mesma
 BDGD sintética no formato de MT (60 alimentadores, dois snapshots, falhas, interrupções e ``valor.json``, sem rótulo de origem),
 roda ``01`` a ``06`` em cada um e compara, byte a byte (SHA-256), tudo que sai em ``reports/`` e ``data/processed/``.
 Só a linha de amostragem do mapa do ``06`` do código base é ajustada (ele falha com menos de 250 mil nós); é a mesma conta.
@@ -144,7 +145,7 @@ def main() -> None:
     res = {
         "base": sha_base,
         "novo": sha_novo,
-        "dados": f"BDGD sintética no formato de MT: {N_ALIM} alimentadores, snapshots 2024 e 2025, sem origem_efeito, configuração padrão",
+        "dados": f"BDGD sintética no formato de MT: {N_ALIM} alimentadores, snapshots 2024 e 2025, sem origem_efeito",
         "scripts_com_erro": {k: [s for s, c in v if c] for k, v in exec_.items()},
         "arquivos_base": len(hb),
         "arquivos_novo": len(hn),
