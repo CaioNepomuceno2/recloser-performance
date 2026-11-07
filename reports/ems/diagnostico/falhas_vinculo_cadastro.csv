@@ -1,0 +1,5 @@
+snapshot,anos_das_falhas,chave,falhas,frac_falhas_casadas,frac_chi_casado,alimentadores_com_historico,alimentadores_casados,circuitos_no_cadastro
+2025,2023-2025,nome do cadastro sem completar,326054.0,0.0,0.0,358,0,362
+2025,2023-2025,nome completado com zeros até 6,326054.0,0.9864378293166163,0.9844432417639334,358,350,362
+2024,2022-2024,nome do cadastro sem completar,300938.0,0.0,0.0,356,0,359
+2024,2022-2024,nome completado com zeros até 6,300938.0,0.9866550585170367,0.986500687479939,356,348,359

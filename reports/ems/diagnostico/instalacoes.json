@@ -1,0 +1,83 @@
+{
+  "snapshots": [
+    2024,
+    2025
+  ],
+  "raio_novo_m": 100,
+  "cadastro": {
+    "unsemt": {
+      "2024": 137493,
+      "2025": 161148
+    },
+    "classes": {
+      "2024": {
+        "fusivel": 116315,
+        "chave": 18475,
+        "religador": 2295,
+        "seccionalizador": 268,
+        "disjuntor": 140
+      },
+      "2025": {
+        "fusivel": 139480,
+        "chave": 18427,
+        "religador": 2646,
+        "seccionalizador": 456,
+        "disjuntor": 139
+      }
+    },
+    "religadores": {
+      "2024": 2295,
+      "2025": 2646,
+      "2025_fechados": 2229
+    },
+    "frac_religadores_telecomandados": {
+      "2024": 0.35860566448801745,
+      "2025": 0.6836734693877551
+    },
+    "frac_cod_id_so_digitos": {
+      "2024": 0.40515517153600544,
+      "2025": 0.3562253332340457
+    },
+    "frac_cod_id_do_ano_atual_que_ja_existia": 0.8422506019311441,
+    "frac_cod_id_do_ano_base_que_continua": 0.9871557097452234
+  },
+  "cod_id_estavel": {
+    "n": 1897,
+    "deslocamento_mediana_m": 0.0,
+    "p99_m": 558.7048537803394,
+    "frac_ate_1m": 0.9488666315234581,
+    "frac_ate_50m": 0.9836584080126516,
+    "frac_ate_100m": 0.9857670005271482,
+    "frac_acima_de_100m": 0.014232999472851872
+  },
+  "regra_do_backtest": {
+    "religadores_fechados_no_ano_atual": 2229,
+    "cod_id_novo": 332,
+    "cod_id_novo_com_religador_antigo_a_menos_de_100m": 41,
+    "novos_pela_regra": 291,
+    "novos_dat_con_por_ano": {
+      "2018": 1,
+      "2019": 6,
+      "2020": 2,
+      "2021": 4,
+      "2022": 12,
+      "2023": 6,
+      "2024": 1,
+      "2025": 230
+    },
+    "novos_dat_con_nula": 0,
+    "novos_dat_con_em_2024_ou_2025": 231,
+    "novos_dat_con_antes_do_ano_base": 60,
+    "frac_novos_dat_con_antes_do_ano_base": 0.20618556701030927,
+    "cod_id_novo_perto_dat_con_em_periodo": 24
+  },
+  "religadores_que_sumiram": {
+    "cod_id_ausente_no_ano_atual": 12,
+    "cod_id_ausente_e_sem_religador_a_menos_de_100m": 5,
+    "circuitos_com_religador_que_sumiu": 5,
+    "novos_em_circuitos_onde_sumiu_religador": 1,
+    "frac_novos_em_circuitos_onde_sumiu_religador": 0.003436426116838488,
+    "saldo_religadores": 351,
+    "novos_menos_sumidos": 286
+  }
+}

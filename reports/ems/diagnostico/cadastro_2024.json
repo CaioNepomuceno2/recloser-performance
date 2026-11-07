@@ -1,0 +1,84 @@
+{
+  "ano": 2024,
+  "camadas": {
+    "SSDMT": 1026928,
+    "SSDMT_km": 90414.04566100001,
+    "SSDMT_comp_nulo_ou_zero": 0,
+    "UNSEMT": 137493,
+    "UNREMT": 294,
+    "UNTRMT": 103840,
+    "CTMT": 359,
+    "UCBT_consumidores": 1454750,
+    "UCMT_consumidores": 6544
+  },
+  "religadores": {
+    "n": 2295,
+    "frac_telecomandados": 0.35860566448801745,
+    "frac_normalmente_abertos": 0.16209150326797386
+  },
+  "classes_unsemt": {
+    "fusivel": 116315,
+    "chave": 18475,
+    "religador": 2295,
+    "seccionalizador": 268,
+    "disjuntor": 140
+  },
+  "frac_unsemt_fora_do_mapeamento": 0.13437047704246763,
+  "P_N_OPE": {
+    "F": 133250,
+    "A": 4243
+  },
+  "circuitos": {
+    "n": 359,
+    "nome_comprimentos": {
+      "5": 357,
+      "10": 2
+    },
+    "nome_so_digitos": 0.0,
+    "nome_alfanumerico": 0.9944289693593314,
+    "nomes_repetidos": 0,
+    "exemplos": [
+      "NAN04",
+      "CGS11",
+      "CGA13",
+      "AQU06",
+      "CGJ07",
+      "CGB12"
+    ],
+    "ssdmt_ctmt_existe_em_ctmt": 0.9999513110948381,
+    "unsemt_ctmt_existe_em_ctmt": 0.9863338497232587,
+    "untrmt_ctmt_existe_em_ctmt": 0.9985939907550077,
+    "canonico_comprimentos": {
+      "6": 357,
+      "10": 2
+    },
+    "canonico_repetidos": 0
+  },
+  "clientes": {
+    "bt_consumidores": 1454750,
+    "bt_com_transformador_no_cadastro": 0.997809932978175,
+    "mt_consumidores": 6544,
+    "mt_com_pac_na_rede": 0.9963325183374083,
+    "cadastro_consumidores_ligados_a_trafo_ou_pac": 0.9978033167863551,
+    "trafos_sem_consumidor": 0.1838308936825886,
+    "trafos_com_pac_na_rede_de_segmentos": 0.2508378274268105,
+    "pac_ini_na_rede": 1.0,
+    "pac_nos_total": 1161682,
+    "ucbt_ctmt_igual_ao_do_trafo": 0.9999745102523898
+  },
+  "dat_con_religadores": {
+    "formato_dd_mm_aaaa": 1.0,
+    "nulos": 0,
+    "por_ano_ultimos": {
+      "2019": 176,
+      "2020": 62,
+      "2021": 111,
+      "2022": 306,
+      "2023": 137,
+      "2024": 81
+    },
+    "padrao_1920": 0,
+    "padrao_1980": 0,
+    "antes_de_1990": 7
+  }
+}

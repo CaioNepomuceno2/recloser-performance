@@ -31,6 +31,9 @@ interrupcoes: ../distribution-asset-risk/data/ems/interim/interrupcoes_ems.parqu
 valor_json: ../automation-impact/reports/ems/valor.json
 exigir_origem_efeito: true
 
+referencias:
+  malha_uf: ../distribution-asset-risk/data/ref/ms_ibge.geojson   # malha do IBGE (UF 50, dado aberto), só para a plausibilidade geográfica do PAC
+
 alimentador:
   largura_nome: 6              # falhas.alimentador de MS é CTMT.NOME completado com zeros até 6 caracteres (0RBR53)
 crs_pac: 31981                 # PAC de 19 a 20 caracteres = X e Y em cm no SIRGAS 2000 / UTM 21S, o estado todo (docs/decisoes_ems.md, seção 2)

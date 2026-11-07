@@ -1,0 +1,176 @@
+{
+  "ano": 2025,
+  "formato": {
+    "UNTRMT.PAC_1": {
+      "n": 106660,
+      "frac_coordenada_19_20": 0.9989780611288206,
+      "comprimentos": {
+        "8": 20,
+        "9": 58,
+        "10": 4,
+        "11": 2,
+        "12": 25,
+        "19": 99920,
+        "20": 6631
+      },
+      "sufixos": {
+        "ET": 99831,
+        "MT": 6720
+      },
+      "x_min_m": 396900.35,
+      "x_max_m": 1135608.03,
+      "comprimento_20_igual_a_x_acima_de_1e6_m": true,
+      "frac_x_acima_de_1e6_m": 0.062233109027601805
+    },
+    "UNSEMT.PAC_1": {
+      "n": 161148,
+      "frac_coordenada_19_20": 0.9819855040087373,
+      "comprimentos": {
+        "7": 16,
+        "8": 288,
+        "9": 1823,
+        "10": 45,
+        "11": 54,
+        "12": 674,
+        "14": 3,
+        "19": 147732,
+        "20": 10513
+      },
+      "sufixos": {
+        "MT": 158245
+      }
+    },
+    "UNSEMT.PAC_2": {
+      "n": 161148,
+      "frac_coordenada_19_20": 0.9775361779233996,
+      "comprimentos": {
+        "7": 12,
+        "8": 337,
+        "9": 1729,
+        "10": 463,
+        "11": 436,
+        "12": 632,
+        "13": 1,
+        "14": 10,
+        "19": 147056,
+        "20": 10472
+      },
+      "sufixos": {
+        "ET": 99833,
+        "MT": 57390,
+        "TD": 305
+      }
+    },
+    "SSDMT.PAC_1": {
+      "n": 1046026,
+      "frac_coordenada_19_20": 1.0,
+      "comprimentos": {
+        "19": 975320,
+        "20": 70706
+      },
+      "sufixos": {
+        "MT": 1046026
+      },
+      "x_min_m": 396749.35,
+      "x_max_m": 1135608.52,
+      "comprimento_20_igual_a_x_acima_de_1e6_m": true,
+      "frac_x_acima_de_1e6_m": 0.06759487813878431
+    },
+    "SSDMT.PAC_2": {
+      "n": 1046026,
+      "frac_coordenada_19_20": 1.0,
+      "comprimentos": {
+        "19": 975322,
+        "20": 70704
+      },
+      "sufixos": {
+        "MT": 1046026
+      }
+    },
+    "CTMT.PAC_INI": {
+      "n": 362,
+      "frac_coordenada_19_20": 1.0,
+      "comprimentos": {
+        "19": 339,
+        "20": 23
+      },
+      "sufixos": {
+        "MT": 362
+      }
+    },
+    "UNREMT.PAC_1": {
+      "n": 316,
+      "frac_coordenada_19_20": 0.9778481012658228,
+      "comprimentos": {
+        "8": 1,
+        "9": 3,
+        "10": 1,
+        "12": 2,
+        "19": 288,
+        "20": 21
+      },
+      "sufixos": {
+        "TD": 305,
+        "MT": 4
+      }
+    }
+  },
+  "referencias": {},
+  "plausibilidade_geografica": {
+    "UTM 20S": {
+      "nos_unicos": 1199536,
+      "lon_min": -64.00050426913145,
+      "lon_max": -56.95310029384634,
+      "lat_min": -24.044984656902123,
+      "lat_max": -17.295425817203036,
+      "frac_dentro_do_estado": 0.05776150111376399,
+      "frac_dentro_do_estado_com_margem_0_1_grau": 0.06190060156593883
+    },
+    "UTM 21S": {
+      "nos_unicos": 1199536,
+      "lon_min": -58.000504269131476,
+      "lon_max": -50.953100293846354,
+      "lat_min": -24.044984656902123,
+      "lat_max": -17.295425817203036,
+      "frac_dentro_do_estado": 0.9973089594643262,
+      "frac_dentro_do_estado_com_margem_0_1_grau": 0.999864114124128
+    },
+    "UTM 22S": {
+      "nos_unicos": 1199536,
+      "lon_min": -52.00050426913146,
+      "lon_max": -44.95310029384635,
+      "lat_min": -24.044984656902123,
+      "lat_max": -17.295425817203036,
+      "frac_dentro_do_estado": 0.011591148577449948,
+      "frac_dentro_do_estado_com_margem_0_1_grau": 0.01775103039842072
+    },
+    "UTM 23S": {
+      "nos_unicos": 1199536,
+      "lon_min": -46.000504269131454,
+      "lon_max": -38.95310029384634,
+      "lat_min": -24.044984656902123,
+      "lat_max": -17.295425817203036,
+      "frac_dentro_do_estado": 0.0,
+      "frac_dentro_do_estado_com_margem_0_1_grau": 0.0
+    }
+  },
+  "segmentos": {
+    "n": 1046026,
+    "com_pac_valido_nos_dois_lados": 1.0,
+    "comp_valido": 1046026,
+    "dist_pac1_pac2_sobre_comp": {
+      "mediana": 0.9999997440489279,
+      "p5": 0.9897763518886523,
+      "p95": 1.000013588547171
+    },
+    "pac_1_no_primeiro_vertice_ate_1m": 0.9480538724658851,
+    "invertido_ate_1m": 1.8163984451629308e-05
+  },
+  "fator_escala_utm21s": {
+    "lon -57 lat -21": 0.9995999999626496,
+    "lon -58.17 lat -21": 0.9997827376776329,
+    "lon -54 lat -21": 1.0008023331535278,
+    "lon -50.92 lat -20": 1.0046179895855905,
+    "lon -50.92 lat -23": 1.004412508777289
+  }
+}
